@@ -37,4 +37,9 @@ public class MyTest {
         str1.append("</html>");
         System.out.println(str1.toString());
     }
+
+    @Test
+    public void testDate() {
+        System.out.println(new Date());
+    }
 }

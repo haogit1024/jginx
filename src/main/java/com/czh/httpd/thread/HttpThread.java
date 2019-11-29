@@ -1,5 +1,11 @@
 package com.czh.httpd.thread;
 
+import com.czh.httpd.response.IndexResponse;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 /**
@@ -15,6 +21,18 @@ public class HttpThread extends Thread {
 
     @Override
     public void run() {
-
+        IndexResponse indexResponse = new IndexResponse();
+        try {
+            OutputStream ost = socket.getOutputStream();
+            String response = indexResponse.getResponse();
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ost));
+            bw.write(response);
+            bw.flush();
+            socket.shutdownOutput();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("socket已关闭");
+        }
     }
 }
