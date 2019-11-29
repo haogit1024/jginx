@@ -1,0 +1,17 @@
+package com.czh.httpd.util;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * @author chenzh
+ * 资源加载器
+ */
+public class ResourcesLoader {
+    public static String getResourceAsString(String filePath) throws IOException {
+        InputStream inputStream = ResourcesLoader.class.getResourceAsStream(filePath);
+        byte[] bytes = new byte[inputStream.available()];
+        int len = inputStream.read(bytes);
+        return new String(bytes, 0, len);
+    }
+}
