@@ -2,7 +2,6 @@ package com.czh.httpd.thread;
 
 import com.czh.httpd.App;
 import com.czh.httpd.header.BaseHttpHeader;
-import com.czh.httpd.header.RequestHeader;
 import com.czh.httpd.header.SimpleRequestHeader;
 import com.czh.httpd.response.IndexResponse;
 import org.apache.commons.lang3.StringUtils;

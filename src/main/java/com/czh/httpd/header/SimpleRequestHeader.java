@@ -29,16 +29,7 @@ public class SimpleRequestHeader extends BaseHttpHeader {
         // http请求头第一行
         String httpLine = headerArray[0];
         this.setFirstLine(httpLine);
-
-        // 处理第二行开始的http header键值对
-        for (int i = 1; i < headerLineLength; i++) {
-            String headerLine = headerArray[i];
-            String[] headerLineArray = headerLine.split(App.HEADER_SEPARATOR);
-            if (headerLineArray.length != 2) {
-                throw new IllegalArgumentException("解析http首部错误: " + headerLine);
-            }
-            header.put(headerLineArray[0], headerLineArray[1]);
-        }
+        this.parseHeader(headerArray);
     }
 
     /**
