@@ -1,9 +1,11 @@
 package com.czh.httpd.thread;
 
 import com.czh.httpd.App;
+import com.czh.httpd.header.BaseHttpHeader;
 import com.czh.httpd.header.RequestHeader;
 import com.czh.httpd.header.SimpleRequestHeader;
 import com.czh.httpd.response.IndexResponse;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.net.Socket;
@@ -32,9 +34,11 @@ public class HttpThread extends Thread {
             System.out.println(requestData);
             System.out.println(requestData.split(App.CRLF).length);
             System.out.println("=========");
-            RequestHeader header = new SimpleRequestHeader(requestData);
-            System.out.println("requestHeader:");
-            System.out.println(header);
+            if (StringUtils.isNotBlank(requestData)) {
+                BaseHttpHeader header = new SimpleRequestHeader(requestData);
+                System.out.println("requestHeader:");
+                System.out.println(header);
+            }
             OutputStream ost = socket.getOutputStream();
             String response = indexResponse.getResponse();
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ost));
