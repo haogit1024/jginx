@@ -14,10 +14,16 @@ public class App {
      * http换行符
      */
     public static final String CRLF="\r\n";
+
     /**
      * 空格
      */
-    public static final String BLANK=" ";
+    public static final String SPACE =" ";
+
+    /**
+     * http头分隔符
+     */
+    public static final String HEADER_SEPARATOR = ": ";
 
     /**
      * 是否可以运行

@@ -1,11 +1,11 @@
 package com.czh.httpd.thread;
 
+import com.czh.httpd.App;
+import com.czh.httpd.header.RequestHeader;
+import com.czh.httpd.header.SimpleRequestHeader;
 import com.czh.httpd.response.IndexResponse;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -23,6 +23,18 @@ public class HttpThread extends Thread {
     public void run() {
         IndexResponse indexResponse = new IndexResponse();
         try {
+            // 打印每次请求的参数
+            InputStream inputStream = socket.getInputStream();
+            byte[] bytes = new byte[inputStream.available()];
+            int len = inputStream.read(bytes);
+            String requestData = new String(bytes, 0, len);
+            System.out.println("requestData:");
+            System.out.println(requestData);
+            System.out.println(requestData.split(App.CRLF).length);
+            System.out.println("=========");
+            RequestHeader header = new SimpleRequestHeader(requestData);
+            System.out.println("requestHeader:");
+            System.out.println(header);
             OutputStream ost = socket.getOutputStream();
             String response = indexResponse.getResponse();
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ost));

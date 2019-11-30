@@ -42,4 +42,14 @@ public class MyTest {
     public void testDate() {
         System.out.println(new Date());
     }
+
+    @Test
+    public void testSplit() {
+        String s = "a" + App.CRLF + "B" + App.CRLF + App.CRLF + App.CRLF + App.CRLF;
+        String[] array = s.split(App.CRLF);
+        System.out.println(array.length);
+        for (String s1 : array) {
+            System.out.println(s1);
+        }
+    }
 }
