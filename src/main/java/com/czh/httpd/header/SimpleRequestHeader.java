@@ -2,15 +2,12 @@ package com.czh.httpd.header;
 
 import com.czh.httpd.App;
 import com.czh.httpd.exception.HeaderFormatException;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author czh
  * 封装http请求头类
  */
-public class SimpleRequestHeader extends BaseHttpHeader {
-    private String method = "GET";
-    private String url = "/";
+public class SimpleRequestHeader extends BaseRequestHeader {
 
     public SimpleRequestHeader() {
     }
@@ -21,46 +18,7 @@ public class SimpleRequestHeader extends BaseHttpHeader {
      * @exception HeaderFormatException 请求头格式
      */
     public SimpleRequestHeader(String requestHeaderString) throws IllegalArgumentException {
-        if (StringUtils.isBlank(requestHeaderString)) {
-            throw new HeaderFormatException("请求头不能为空");
-        }
-        String[] headerArray = requestHeaderString.split(App.CRLF);
-        int headerLineLength = headerArray.length;
-        // http请求头第一行
-        String httpLine = headerArray[0];
-        this.setFirstLine(httpLine);
-        this.parseHeader(headerArray);
-    }
-
-    /**
-     * 设置http请求方式
-     * @param method GET
-     */
-    public void settMethod(String method) {
-        this.method = method;
-    }
-
-    /**
-     * 获取http请求头
-     * @return GET / POST / null
-     */
-    public String getMethod() {
-        return method;
-    }
-
-    /**
-     * 设置请求的资源
-     * @param url
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
-     * @return 请求的资源
-     */
-    public String getUrl() {
-        return url;
+        super(requestHeaderString);
     }
 
     @Override
@@ -77,7 +35,7 @@ public class SimpleRequestHeader extends BaseHttpHeader {
 
     @Override
     public String getFirstLine() {
-        return this.method + App.SPACE + this.url + App.SPACE + this.httpVersion + App.CRLF;
+        return this.method + App.SPACE + this.url + App.SPACE + this.httpVersion;
     }
 
     @Override

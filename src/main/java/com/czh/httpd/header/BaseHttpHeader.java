@@ -1,6 +1,8 @@
 package com.czh.httpd.header;
 
 import com.czh.httpd.App;
+import com.czh.httpd.exception.HeaderFormatException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,25 @@ import java.util.Map;
 public abstract class BaseHttpHeader {
     protected Map<String, String> header = new HashMap<>();
     protected String httpVersion;
+
+    public BaseHttpHeader() {
+    }
+
+    /**
+     * 根据http首部生成类
+     * @param headerString http首部
+     * @exception HeaderFormatException 首部格式错误
+     */
+    public BaseHttpHeader(String headerString) {
+        if (StringUtils.isBlank(headerString)) {
+            throw new HeaderFormatException("header不能为空");
+        }
+        String[] headerArray = headerString.split(App.CRLF);
+        // http请求头第一行
+        String httpLine = headerArray[0];
+        this.setFirstLine(httpLine);
+        this.parseHeader(headerArray);
+    }
 
     /**
      * 处理第二行开始的http header键值对
@@ -77,7 +98,7 @@ public abstract class BaseHttpHeader {
 
     public String build() {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.getFirstLine());
+        sb.append(this.getFirstLine()).append(App.CRLF);
         header.forEach((k, v) -> sb.append(k).append(App.HEADER_SEPARATOR).append(v).append(App.CRLF));
         sb.append(App.CRLF);
         return sb.toString();

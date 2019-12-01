@@ -5,31 +5,13 @@ import com.czh.httpd.App;
 /**
  * @author czh
  */
-public class SimpleResponseHeader extends BaseHttpHeader {
-    private String httpStatus;
-    private String statusName;
+public class SimpleResponseHeader extends BaseResponseHeader {
 
     public SimpleResponseHeader() {
     }
 
     public SimpleResponseHeader(String responseHeaderString) {
-
-    }
-
-    public String getHttpStatus() {
-        return httpStatus;
-    }
-
-    public void setHttpStatus(String httpStatus) {
-        this.httpStatus = httpStatus;
-    }
-
-    public String getStatusName() {
-        return statusName;
-    }
-
-    public void setStatusName(String statusName) {
-        this.statusName = statusName;
+        super(responseHeaderString);
     }
 
     @Override
@@ -47,5 +29,10 @@ public class SimpleResponseHeader extends BaseHttpHeader {
     @Override
     public String getFirstLine() {
         return this.httpVersion + App.SPACE + this.httpStatus + App.SPACE + this.statusName;
+    }
+
+    @Override
+    public String toString() {
+        return this.build();
     }
 }
