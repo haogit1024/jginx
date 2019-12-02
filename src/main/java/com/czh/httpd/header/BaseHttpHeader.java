@@ -84,7 +84,9 @@ public abstract class BaseHttpHeader {
      * @param value
      */
     public void setHeader(String key, String value) {
-        header.put(key, value);
+        if (StringUtils.isNotBlank(value)) {
+            header.put(key, value);
+        }
     }
 
     /**

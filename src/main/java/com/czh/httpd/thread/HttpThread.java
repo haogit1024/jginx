@@ -4,6 +4,8 @@ import com.czh.httpd.App;
 import com.czh.httpd.header.BaseHttpHeader;
 import com.czh.httpd.header.SimpleRequestHeader;
 import com.czh.httpd.response.IndexResponse;
+import com.czh.httpd.response.Response;
+import com.czh.httpd.response.ResponseFactory;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
@@ -22,7 +24,7 @@ public class HttpThread extends Thread {
 
     @Override
     public void run() {
-        IndexResponse indexResponse = new IndexResponse();
+//        IndexResponse indexResponse = new IndexResponse();
         try {
             // 打印每次请求的参数
             InputStream inputStream = socket.getInputStream();
@@ -31,15 +33,19 @@ public class HttpThread extends Thread {
             String requestData = new String(bytes, 0, len);
             System.out.println("requestData:");
             System.out.println(requestData);
-            System.out.println(requestData.split(App.CRLF).length);
             System.out.println("=========");
+            String response;
             if (StringUtils.isNotBlank(requestData)) {
                 BaseHttpHeader header = new SimpleRequestHeader(requestData);
-                System.out.println("requestHeader:");
-                System.out.println(header);
+                Response indexResponse = ResponseFactory.getIndexResponse(header.getHeader("Cookie"));
+                response = indexResponse.build();
+
+            } else {
+                // 空请求头处理
+                Response indexResponse = ResponseFactory.getIndexResponse("");
+                response = indexResponse.build();
             }
             OutputStream ost = socket.getOutputStream();
-            String response = indexResponse.getResponse();
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ost));
             bw.write(response);
             bw.flush();
