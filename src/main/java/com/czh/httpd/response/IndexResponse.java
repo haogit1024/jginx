@@ -11,7 +11,7 @@ import java.io.IOException;
 public class IndexResponse implements IResponse {
     @Override
     public String getHeader(int length) {
-        String resHeader = """
+        /*String resHeader = """
                 HTTP/1.1 200 OK
                 Server:czh Server/0.0.1
                 Date:Fri Nov 29 14:22:24 CST 2019
@@ -20,7 +20,8 @@ public class IndexResponse implements IResponse {
                 """;
         resHeader = String.format(resHeader, length);
         resHeader += App.CRLF;
-        return resHeader;
+        return resHeader;*/
+        return null;
     }
 
     @Override

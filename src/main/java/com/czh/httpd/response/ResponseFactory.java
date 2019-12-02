@@ -5,7 +5,6 @@ import com.czh.httpd.header.SimpleResponseHeader;
 import com.czh.httpd.util.ResourcesLoader;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 
 /**
@@ -13,13 +12,13 @@ import java.util.Date;
  * 响应工厂类
  */
 public class ResponseFactory {
-    String demo = """
+    /*String demo = """
             HTTP/1.1 200 OK
             Server:czh Server/0.0.1
             Date:Fri Nov 29 14:22:24 CST 2019
             Content-type:text/html;charset=UTF-8
             Content-Length:%d
-            """;
+            """;*/
     public static Response getIndexResponse(String cookie) {
         BaseResponseHeader header = new SimpleResponseHeader();
         String content = "";
