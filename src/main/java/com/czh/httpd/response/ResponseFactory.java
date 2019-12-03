@@ -67,14 +67,8 @@ public class ResponseFactory {
         return response;
     }
 
-    /**
-     * 粗暴实现
-     * @param fileType
-     * @return
-     */
-    private static String getContentType(String fileType) {
-        switch (fileType) {
-
-        }
-    }
+//  res.setHeader('Content-Type', 'application/octet-stream');
+    // 在响应之前，告诉浏览器，这个数据是要作为文件下载的
+    // 通过设置响应报文头实现
+//  res.setHeader('Content-Disposition', 'attachment; filename=demo.txt');
 }

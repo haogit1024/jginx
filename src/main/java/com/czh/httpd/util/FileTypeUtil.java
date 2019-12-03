@@ -8,14 +8,14 @@ public class FileTypeUtil {
         }
         String ext = "." + array[1];
         if (ext.equals(".text") || ext.equals(".css")) {
-            return "text";
+            return "text/html";
         } else if (ext.equals(".java") || ext.equals(".html") || ext.equals(".js") || ext.equals(".php") || ext.equals(".xml") || ext.equals(".c")) {
 //            return "code";
-            return "text";
+            return "text/html";
         } else if (ext.equals(".mp4") || ext.equals(".avi") || ext.equals(".rmvb") || ext.equals(".wmv") || ext.equals(".mov") || ext.equals(".flv")) {
-            return "movie";
+            return "video";
         } else if (ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".png") || ext.equals(".gif") || ext.equals(".PNG")) {
-            return "image";
+            return "image/" + array[1];
         } else if (ext.equals(".mp3")) {
             return "audio";
         } else if (ext.equals(".xls") || ext.equals(".xlsx") || ext.equals("csv")) {
