@@ -4,6 +4,7 @@ import java.io.IOException;
 
 /**
  * @author chenzh
+ * @deprecated
  */
 public interface IResponse {
     /**

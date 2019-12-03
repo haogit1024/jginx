@@ -1,7 +1,6 @@
 package com.czh.httpd.util;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * @author chenzh
@@ -22,4 +21,41 @@ public class ResourcesLoader {
         int len = inputStream.read(bytes);
         return new String(bytes, 0, len);
     }
+
+    /**
+     *  **调用该方法前一定要判断该文件已存在**
+     * @param file
+     * @return
+     */
+    public static String getContent(File file) {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            byte[] bytes = new byte[fis.available()];
+            int len = fis.read(bytes);
+            return new String(bytes, 0, len);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     *  **调用该方法前一定要判断该文件已存在**
+     * @param file
+     * @param off   偏移位
+     * @param len   读取长度
+     * @return
+     */
+    public static String getContent(File file, int off, int len) {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            byte[] bytes = new byte[len];
+            len = fis.read(bytes, off, len);
+            return new String(bytes, 0, len);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 }

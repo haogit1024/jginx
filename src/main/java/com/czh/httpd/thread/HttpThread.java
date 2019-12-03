@@ -1,9 +1,7 @@
 package com.czh.httpd.thread;
 
-import com.czh.httpd.App;
-import com.czh.httpd.header.BaseHttpHeader;
-import com.czh.httpd.header.SimpleRequestHeader;
-import com.czh.httpd.response.IndexResponse;
+import com.czh.httpd.handle.IRequestHandle;
+import com.czh.httpd.handle.SimpleRequestHandle;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.response.ResponseFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -31,15 +29,11 @@ public class HttpThread extends Thread {
             byte[] bytes = new byte[inputStream.available()];
             int len = inputStream.read(bytes);
             String requestData = new String(bytes, 0, len);
-            System.out.println("requestData:");
-            System.out.println(requestData);
-            System.out.println("=========");
             String response;
             if (StringUtils.isNotBlank(requestData)) {
-                BaseHttpHeader header = new SimpleRequestHeader(requestData);
-                Response indexResponse = ResponseFactory.getIndexResponse(header.getHeader("Cookie"));
-                response = indexResponse.build();
-
+                IRequestHandle requestHandle = new SimpleRequestHandle();
+                requestHandle.setRequest(requestData);
+                response = requestHandle.getResponse();
             } else {
                 // 空请求头处理
                 Response indexResponse = ResponseFactory.getIndexResponse("");

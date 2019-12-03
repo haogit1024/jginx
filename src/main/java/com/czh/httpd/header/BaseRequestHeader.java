@@ -5,8 +5,8 @@ package com.czh.httpd.header;
  * http请求头类
  */
 public abstract class BaseRequestHeader extends BaseHttpHeader{
-    protected String method = "GET";
-    protected String url = "/";
+    protected String method;
+    protected String url;
 
     public BaseRequestHeader() {
     }

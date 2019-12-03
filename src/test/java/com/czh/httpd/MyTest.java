@@ -1,7 +1,13 @@
 package com.czh.httpd;
 
+import com.czh.httpd.response.Response;
+import com.czh.httpd.util.ResourcesLoader;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 
 public class MyTest {
@@ -51,5 +57,21 @@ public class MyTest {
         for (String s1 : array) {
             System.out.println(s1);
         }
+    }
+
+    @Test
+    public void testError() throws IOException {
+        String errorHtml = ResourcesLoader.getResourceAsString("/static/error.html");
+        System.out.println(String.format(errorHtml, "wdnmd"));
+    }
+
+    @Test
+    public void testPath() {
+        Path path = Paths.get(App.WORK_SPACE, "test.html");
+        File file = path.toFile();
+//        System.out.println(file.getName());
+//        System.out.println(file.exists());
+        String content = ResourcesLoader.getContent(file);
+        System.out.println(content);
     }
 }

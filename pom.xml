@@ -43,20 +43,49 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.1</version>
+                <!-- 对要打的jar包进行配置 -->
+                <configuration>
+                    <!-- Configuration of the archiver -->
+                    <archive>
+                        <!--生成的jar中，不要包含pom.xml和pom.properties这两个文件-->
+                        <addMavenDescriptor>false</addMavenDescriptor>
+
+                        <!-- Manifest specific configuration -->
+                        <manifest>
+                            <!--是否要把第三方jar放到manifest的classpath中-->
+                            <addClasspath>true</addClasspath>
+
+                            <!--生成的manifest中classpath的前缀，
+                            因为要把第三方jar放到lib目录下，
+                            所以classpath的前缀是lib/-->
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                    <!--过滤掉不希望包含在jar中的文件-->
+                    <!--<excludes>
+                        &lt;!&ndash; 排除不需要的文件夹(路径是jar包内部的路径) &ndash;&gt;
+                        <exclude>**/assembly/</exclude>
+                    </excludes>-->
+                </configuration>
+            </plugin>
+            <!--<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.1</version>
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.czh.httpd.App</mainClass> <!-- 指定入口类路径 -->
+                            <mainClass>com.czh.httpd.App</mainClass> &lt;!&ndash; 指定入口类路径 &ndash;&gt;
                         </manifest>
                     </archive>
                     <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef> <!-- jar包后缀，生成的jar包形式为：project-1.0-SNAPSHOT-jar-with-dependencies.jar -->
+                        <descriptorRef>jar-with-dependencies</descriptorRef> &lt;!&ndash; jar包后缀，生成的jar包形式为：project-1.0-SNAPSHOT-jar-with-dependencies.jar &ndash;&gt;
                     </descriptorRefs>
                 </configuration>
-                <!-- 添加此项后，可直接使用mvn package | mvn install -->
-                <!-- 不添加此项，需直接使用mvn package assembly:single -->
+                &lt;!&ndash; 添加此项后，可直接使用mvn package | mvn install &ndash;&gt;
+                &lt;!&ndash; 不添加此项，需直接使用mvn package assembly:single &ndash;&gt;
                 <executions>
                     <execution>
                         <id>make-assembly</id>
@@ -66,7 +95,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
 
     </build>

@@ -98,6 +98,14 @@ public abstract class BaseHttpHeader {
         return header.get(key);
     }
 
+    /**
+     * 获取cookie
+     * @return
+     */
+    public String getCookie() {
+        return header.get("Cookie");
+    }
+
     public String build() {
         StringBuilder sb = new StringBuilder();
         sb.append(this.getFirstLine()).append(App.CRLF);

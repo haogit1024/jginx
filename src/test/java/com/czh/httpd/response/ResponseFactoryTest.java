@@ -15,4 +15,14 @@ class ResponseFactoryTest {
     @Test
     void getResponseByUrl() {
     }
+
+    @Test
+    void getNotFoundResponse() {
+        Response response = ResponseFactory.getNotFoundResponse("wdnmd", "fuck");
+        System.out.println(response);
+    }
+
+    @Test
+    void testGetResponseByUrl() {
+    }
 }

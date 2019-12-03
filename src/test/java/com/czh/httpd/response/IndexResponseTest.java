@@ -18,6 +18,5 @@ class IndexResponseTest {
 
     @Test
     void getResponse() throws IOException {
-        System.out.println(new IndexResponse().getResponse());
     }
 }

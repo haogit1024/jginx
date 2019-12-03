@@ -26,6 +26,11 @@ public class App {
     public static final String HEADER_SEPARATOR = ": ";
 
     /**
+     * 工作目录
+     */
+    public static final String WORK_SPACE = "D:\\www";
+
+    /**
      * 是否可以运行
      */
     public static boolean RUN_ABLE = true;
