@@ -38,10 +38,11 @@ public class ResponseFactory {
         Path path = Paths.get(App.WORK_SPACE, url);
         File file = path.toFile();
         if (!file.exists()) {
-            return getNotFoundResponse(url, cookie);
+            return getNotFoundResponse(cookie, url);
         }
         // TODO  1.判断请求类型或者文件类型, 生成response header 2.获取响应内容
         // 先粗暴处理, 所有请求都分会html文本响应头
+        String fileName = file.getName();
         String content = ResourcesLoader.getContent(file);
         BaseResponseHeader responseHeader = ResponseHeaderFactory.getHtmlResponse(content.getBytes().length, cookie, HttpStatus.OK);
         return new Response(responseHeader, content);
@@ -64,5 +65,16 @@ public class ResponseFactory {
         response.setResponseHeader(header);
         response.setResponseContent(content);
         return response;
+    }
+
+    /**
+     * 粗暴实现
+     * @param fileType
+     * @return
+     */
+    private static String getContentType(String fileType) {
+        switch (fileType) {
+
+        }
     }
 }
