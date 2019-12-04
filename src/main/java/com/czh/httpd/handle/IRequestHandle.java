@@ -1,5 +1,7 @@
 package com.czh.httpd.handle;
 
+import com.czh.httpd.response.Response;
+
 /**
  * @author czh
  * 处理请求类
@@ -16,5 +18,5 @@ public interface IRequestHandle {
      * 根据请求返回相应的响应
      * @return
      */
-    String getResponse();
+    Response getResponse();
 }

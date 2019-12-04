@@ -8,6 +8,7 @@ import com.czh.httpd.util.FileTypeUtil;
 import com.czh.httpd.util.ResourcesLoader;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -42,9 +43,9 @@ public class ResponseFactory {
         }
         System.out.println("file length: " + file.length());
         // 先粗暴处理, 所有请求都分会html文本响应头
-        String fileName = file.getName();
-        String contentType = FileTypeUtil.getContentType(fileName);
-        String content = ResourcesLoader.getContent(file);
+        String contentType = new MimetypesFileTypeMap().getContentType(file);
+        System.out.println("contentType: " + contentType);
+        byte[] content = ResourcesLoader.getBytes(file);
         BaseResponseHeader responseHeader = ResponseHeaderFactory.getBaseResponseHeader(file.length(), cookie, HttpStatus.OK);
         responseHeader.setHeader("Content-Type", contentType);
         return new Response(responseHeader, content);
@@ -57,6 +58,7 @@ public class ResponseFactory {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("读取默认页出错");
+            return ResponseFactory.getErrorResponse("读取默认页出错", cookie);
         }
         if (StringUtils.isNotBlank(message)) {
             content = String.format(content, message);

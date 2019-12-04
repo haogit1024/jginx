@@ -23,7 +23,7 @@ public class SimpleRequestHandle implements IRequestHandle {
     }
 
     @Override
-    public String getResponse() {
+    public Response getResponse() {
         String[] reqArray = request.split(App.CRLF + App.CRLF);
         if (reqArray.length == 1) {
             requestHeader = new SimpleRequestHeader(reqArray[0]);
@@ -32,12 +32,10 @@ public class SimpleRequestHandle implements IRequestHandle {
             requestContent = reqArray[1];
         } else {
             String errMsg = "request格式错误: " + request;
-            Response errorResponse = ResponseFactory.getErrorResponse(errMsg, requestHeader.getCookie());
-            return errorResponse.build();
+            return ResponseFactory.getErrorResponse(errMsg, requestHeader.getCookie());
         }
         System.out.println("requestHeader:");
         System.out.println(requestHeader);
-        Response response = ResponseFactory.getResponseByUrl(requestHeader.getUrl(), requestHeader.getCookie());
-        return response.build();
+        return ResponseFactory.getResponseByUrl(requestHeader.getUrl(), requestHeader.getCookie());
     }
 }

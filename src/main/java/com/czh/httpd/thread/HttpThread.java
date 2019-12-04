@@ -29,21 +29,22 @@ public class HttpThread extends Thread {
             byte[] bytes = new byte[inputStream.available()];
             int len = inputStream.read(bytes);
             String requestData = new String(bytes, 0, len);
-            String response;
+            Response response;
             if (StringUtils.isNotBlank(requestData)) {
                 IRequestHandle requestHandle = new SimpleRequestHandle();
                 requestHandle.setRequest(requestData);
                 response = requestHandle.getResponse();
             } else {
                 // 空请求头处理
-                Response indexResponse = ResponseFactory.getIndexResponse("");
-                response = indexResponse.build();
+                response = ResponseFactory.getIndexResponse("");
             }
             OutputStream ost = socket.getOutputStream();
-            // TODO 改位写入byte[] 方法
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ost));
-            bw.write(response);
-            bw.flush();
+            ost.write(response.getResponseHeader().build().getBytes());
+            ost.write(response.getResponseContent());
+//            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ost));
+//            bw.write(response.getResponseHeader().build());
+//            bw.write(response.getResponseContent());
+//            bw.flush();
             socket.shutdownOutput();
             socket.close();
         } catch (IOException e) {

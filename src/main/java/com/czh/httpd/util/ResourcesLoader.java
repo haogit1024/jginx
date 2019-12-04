@@ -1,6 +1,9 @@
 package com.czh.httpd.util;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author chenzh
@@ -22,6 +25,20 @@ public class ResourcesLoader {
         return new String(bytes, 0, len);
     }
 
+    public static byte[] getResourceAsBytes(String filePath) {
+        try {
+            InputStream inputStream = ResourcesLoader.class.getResourceAsStream(filePath);
+            byte[] bytes = new byte[inputStream.available()];
+            int len = inputStream.read(bytes);
+            return ArrayUtil.splitBytes(bytes, 0, len);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("读取resource出错");
+        }
+        return new byte[0];
+    }
+
     /**
      *  **调用该方法前一定要判断该文件已存在**
      * @param file
@@ -37,6 +54,18 @@ public class ResourcesLoader {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static byte[] getBytes(File file) {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            byte[] bytes = new byte[fis.available()];
+            int len = fis.read(bytes);
+            return ArrayUtil.splitBytes(bytes, 0, len);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new byte[0];
     }
 
     /**

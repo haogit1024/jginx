@@ -8,7 +8,8 @@ import com.czh.httpd.header.BaseResponseHeader;
  */
 public class Response {
     protected BaseResponseHeader responseHeader;
-    protected String responseContent;
+    // TODO 修改为byte[]
+    protected byte[] responseContent;
 
     public Response() {
     }
@@ -18,7 +19,7 @@ public class Response {
      * @param responseHeader   响应头
      * @param responseContent  响应体
      */
-    public Response(BaseResponseHeader responseHeader, String responseContent) {
+    public Response(BaseResponseHeader responseHeader, byte[] responseContent) {
         this.responseHeader = responseHeader;
         this.responseContent = responseContent;
     }
@@ -31,11 +32,11 @@ public class Response {
         this.responseHeader = responseHeader;
     }
 
-    public String getResponseContent() {
+    public byte[] getResponseContent() {
         return responseContent;
     }
 
-    public void setResponseContent(String responseContent) {
+    public void setResponseContent(byte[] responseContent) {
         this.responseContent = responseContent;
     }
 

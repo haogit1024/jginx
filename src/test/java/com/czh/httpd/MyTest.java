@@ -4,6 +4,7 @@ import com.czh.httpd.response.Response;
 import com.czh.httpd.util.ResourcesLoader;
 import org.junit.jupiter.api.Test;
 
+import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -82,5 +83,14 @@ public class MyTest {
         for (String s : array) {
             System.out.println(s);
         }
+    }
+
+    @Test
+    public void testContentType() {
+        String filePath = "D:\\www\\test.png";
+        File file = new File(filePath);
+        System.out.println(file.exists());
+        String type = new MimetypesFileTypeMap().getContentType(file);
+        System.out.println(type);
     }
 }
