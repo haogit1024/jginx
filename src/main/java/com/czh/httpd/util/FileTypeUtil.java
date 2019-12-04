@@ -1,38 +1,44 @@
 package com.czh.httpd.util;
 
 public class FileTypeUtil {
+    private static final String download = "application/octet-stream";
     public static String getContentType(String fileName) {
-        String[] array = fileName.split(".");
+        String[] array = fileName.split("\\.");
         if (array.length != 2) {
-            return "download";
+            System.out.println("1: " + array[0]);
+            System.out.println("2: " + array[1]);
+            return download;
         }
         String ext = "." + array[1];
+        System.out.println("ext: " + ext);
         if (ext.equals(".text") || ext.equals(".css")) {
             return "text/html";
         } else if (ext.equals(".java") || ext.equals(".html") || ext.equals(".js") || ext.equals(".php") || ext.equals(".xml") || ext.equals(".c")) {
 //            return "code";
             return "text/html";
         } else if (ext.equals(".mp4") || ext.equals(".avi") || ext.equals(".rmvb") || ext.equals(".wmv") || ext.equals(".mov") || ext.equals(".flv")) {
-            return "video";
+            return "video/*";
         } else if (ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".png") || ext.equals(".gif") || ext.equals(".PNG")) {
-            return "image/" + array[1];
+//            return "image/" + array[1];
+//            return "image/png";
+            return download;
         } else if (ext.equals(".mp3")) {
-            return "audio";
+            return "audio/mp3";
         } else if (ext.equals(".xls") || ext.equals(".xlsx") || ext.equals("csv")) {
 //            return "excel";
-            return "download";
+            return download;
         } else if (ext.equals(".docx") || ext.equals(".doc")) {
 //            return "word";
-            return "download";
+            return download;
         } else if (ext.equals(".pdf")) {
 //            return "pdf";
-            return "download";
+            return "application/pdf";
         } else if (ext.equals(".rar") || ext.equals(".zip") || ext.equals(".7z") || ext.equals("tar.gz")) {
 //            return "zip";
-            return "download";
+            return download;
         } else if (ext.equals(".ppt")) {
 //            return "powerpoint";
-            return "download";
+            return download;
         }
 //        return ext.substring(1,ext.length());
         return "file";

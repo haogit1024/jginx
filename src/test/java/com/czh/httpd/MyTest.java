@@ -74,4 +74,13 @@ public class MyTest {
         String content = ResourcesLoader.getContent(file);
         System.out.println(content);
     }
+
+    @Test
+    public void testSpilt() {
+        String name = "test.html";
+        String[] array = name.split("\\.");
+        for (String s : array) {
+            System.out.println(s);
+        }
+    }
 }

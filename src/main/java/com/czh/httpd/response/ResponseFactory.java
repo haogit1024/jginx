@@ -3,8 +3,8 @@ package com.czh.httpd.response;
 import com.czh.httpd.App;
 import com.czh.httpd.enums.HttpStatus;
 import com.czh.httpd.header.BaseResponseHeader;
-import com.czh.httpd.header.ResponseHeader;
 import com.czh.httpd.header.ResponseHeaderFactory;
+import com.czh.httpd.util.FileTypeUtil;
 import com.czh.httpd.util.ResourcesLoader;
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,11 +40,13 @@ public class ResponseFactory {
         if (!file.exists()) {
             return getNotFoundResponse(cookie, url);
         }
-        // TODO  1.判断请求类型或者文件类型, 生成response header 2.获取响应内容
+        System.out.println("file length: " + file.length());
         // 先粗暴处理, 所有请求都分会html文本响应头
         String fileName = file.getName();
+        String contentType = FileTypeUtil.getContentType(fileName);
         String content = ResourcesLoader.getContent(file);
-        BaseResponseHeader responseHeader = ResponseHeaderFactory.getHtmlResponse(content.getBytes().length, cookie, HttpStatus.OK);
+        BaseResponseHeader responseHeader = ResponseHeaderFactory.getBaseResponseHeader(file.length(), cookie, HttpStatus.OK);
+        responseHeader.setHeader("Content-Type", contentType);
         return new Response(responseHeader, content);
     }
 
@@ -60,10 +62,10 @@ public class ResponseFactory {
             content = String.format(content, message);
         }
         int contentLength = content.getBytes().length;
-        BaseResponseHeader header = ResponseHeaderFactory.getHtmlResponse(contentLength, cookie, httpStatus);
+        BaseResponseHeader header = ResponseHeaderFactory.getHtmlResponseHeader(contentLength, cookie, httpStatus);
         Response response = new Response();
         response.setResponseHeader(header);
-        response.setResponseContent(content);
+        response.setResponseContent(content.getBytes());
         return response;
     }
 

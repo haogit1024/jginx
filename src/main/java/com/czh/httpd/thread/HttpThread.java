@@ -40,6 +40,7 @@ public class HttpThread extends Thread {
                 response = indexResponse.build();
             }
             OutputStream ost = socket.getOutputStream();
+            // TODO 改位写入byte[] 方法
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ost));
             bw.write(response);
             bw.flush();
