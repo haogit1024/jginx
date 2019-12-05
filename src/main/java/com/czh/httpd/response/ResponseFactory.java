@@ -2,10 +2,11 @@ package com.czh.httpd.response;
 
 import com.czh.httpd.App;
 import com.czh.httpd.enums.HttpStatus;
+import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.header.BaseResponseHeader;
 import com.czh.httpd.header.ResponseHeaderFactory;
-import com.czh.httpd.util.FileTypeUtil;
 import com.czh.httpd.util.ResourcesLoader;
+import com.sun.xml.internal.ws.api.ResourceLoader;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -31,7 +32,7 @@ public class ResponseFactory {
         return getResponseByResource("/static/404.html", cookie, HttpStatus.NOT_FOUND, url);
     }
 
-    public static Response getResponseByUrl(String url, String cookie) {
+    public static Response getResponseByUrl(String url, String cookie, BaseRequestHeader requestHeader) {
         System.out.println("url: " + url);
         if ("/".equals(url)) {
             return getIndexResponse(cookie);
@@ -45,7 +46,18 @@ public class ResponseFactory {
         // 先粗暴处理, 所有请求都分会html文本响应头
         String contentType = new MimetypesFileTypeMap().getContentType(file);
         System.out.println("contentType: " + contentType);
-        byte[] content = ResourcesLoader.getBytes(file);
+        String range = requestHeader.getHeader("Range");
+        byte[] content;
+        if (StringUtils.isNotBlank(range)) {
+            System.out.println("range");
+            String[] array = range.split("-");
+            int start = Integer.parseInt(array[0]);
+            int end = Integer.parseInt(array[1]);
+            content = ResourcesLoader.getBytes(file, start, end);
+        } else {
+            System.out.println("not range");
+            content = ResourcesLoader.getBytes(file);
+        }
         BaseResponseHeader responseHeader = ResponseHeaderFactory.getBaseResponseHeader(file.length(), cookie, HttpStatus.OK);
         responseHeader.setHeader("Content-Type", contentType);
         return new Response(responseHeader, content);

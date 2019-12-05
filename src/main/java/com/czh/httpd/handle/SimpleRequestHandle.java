@@ -36,6 +36,7 @@ public class SimpleRequestHandle implements IRequestHandle {
         }
         System.out.println("requestHeader:");
         System.out.println(requestHeader);
-        return ResponseFactory.getResponseByUrl(requestHeader.getUrl(), requestHeader.getCookie());
+        String range = requestHeader.getHeader("Range");
+        return ResponseFactory.getResponseByUrl(requestHeader.getUrl(), requestHeader.getCookie(), requestHeader);
     }
 }

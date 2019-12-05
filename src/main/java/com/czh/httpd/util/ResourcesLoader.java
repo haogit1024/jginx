@@ -64,6 +64,21 @@ public class ResourcesLoader {
             return ArrayUtil.splitBytes(bytes, 0, len);
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("读取文件出错");
+        }
+        return new byte[0];
+    }
+
+    public static byte[] getBytes(File file, int start, int end) {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            int len = end - start;
+            byte[] bytes = new byte[len];
+            len = fis.read(bytes);
+            return ArrayUtil.splitBytes(bytes, 0, len);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("读取文件出错");
         }
         return new byte[0];
     }
