@@ -13,4 +13,14 @@ class ArrayUtilTest {
             System.out.println(b);
         }
     }
+
+    @Test
+    void mergeBytes() {
+        byte[] arr1 = {1,2,3,4};
+        byte[] arr2 = {5,6,7,8};
+        byte[] res = ArrayUtil.mergeBytes(arr1, arr2);
+        for (byte b : res) {
+            System.out.println(b);
+        }
+    }
 }

@@ -5,11 +5,12 @@ import com.czh.httpd.enums.HttpStatus;
 import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.header.BaseResponseHeader;
 import com.czh.httpd.header.ResponseHeaderFactory;
+import com.czh.httpd.util.HttpHeaderUtil;
 import com.czh.httpd.util.ResourcesLoader;
-import com.sun.xml.internal.ws.api.ResourceLoader;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -43,22 +44,37 @@ public class ResponseFactory {
             return getNotFoundResponse(cookie, url);
         }
         System.out.println("file length: " + file.length());
-        // 先粗暴处理, 所有请求都分会html文本响应头
+        // 先粗暴处理
         String contentType = new MimetypesFileTypeMap().getContentType(file);
         System.out.println("contentType: " + contentType);
         String range = requestHeader.getHeader("Range");
         byte[] content;
+        BaseResponseHeader responseHeader = ResponseHeaderFactory.getBaseResponseHeader(cookie, HttpStatus.OK);
         if (StringUtils.isNotBlank(range)) {
-            System.out.println("range");
-            String[] array = range.split("-");
-            int start = Integer.parseInt(array[0]);
-            int end = Integer.parseInt(array[1]);
-            content = ResourcesLoader.getBytes(file, start, end);
+            System.out.println("Range: " + range);
+            contentType = "image/png";
+            try {
+                int[] rangeArr = HttpHeaderUtil.parseRequestRange(range);
+                int start = rangeArr[0];
+                int end = rangeArr[1];
+                int len = end - start + 1;
+                content = ResourcesLoader.getBytes(file, start, end);
+                String responseRange = String.format("bytes %d-%d/%d", start, end, file.length());
+                System.out.println("responseRange: " + responseRange);
+                responseHeader.setHeader("Content-Length", String.valueOf(len));
+                responseHeader.setHeader("Content-Range", responseRange);
+                responseHeader.setHttpStatus("206");
+                responseHeader.setStatusName(HttpStatus.PARTIAL_CONTENT.getReasonPhrase());
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                System.out.println("处理Range出错");
+                return ResponseFactory.getErrorResponse(e.getMessage(), cookie);
+            }
         } else {
             System.out.println("not range");
             content = ResourcesLoader.getBytes(file);
+            responseHeader.setHeader("Content-Length", String.valueOf(file.length()));
         }
-        BaseResponseHeader responseHeader = ResponseHeaderFactory.getBaseResponseHeader(file.length(), cookie, HttpStatus.OK);
         responseHeader.setHeader("Content-Type", contentType);
         return new Response(responseHeader, content);
     }

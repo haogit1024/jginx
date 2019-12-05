@@ -4,6 +4,7 @@ import com.czh.httpd.handle.IRequestHandle;
 import com.czh.httpd.handle.SimpleRequestHandle;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.response.ResponseFactory;
+import com.czh.httpd.util.ArrayUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
@@ -39,13 +40,14 @@ public class HttpThread extends Thread {
                 response = ResponseFactory.getIndexResponse("");
             }
             OutputStream ost = socket.getOutputStream();
-            ost.write(response.getResponseHeader().build().getBytes());
-            ost.write(response.getResponseContent());
-//            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ost));
-//            bw.write(response.getResponseHeader().build());
-//            bw.write(response.getResponseContent());
-//            bw.flush();
+            System.out.println("responseHeader: ");
+            System.out.println(response.getResponseHeader().build());
+//            ost.write(response.getResponseHeader().build().getBytes());
+//            ost.write(response.getResponseContent());
+            byte[] res = ArrayUtil.mergeBytes(response.getResponseHeader().build().getBytes(), response.getResponseContent());
+            ost.write(res);
             socket.shutdownOutput();
+            socket.getInputStream();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();

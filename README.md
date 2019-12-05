@@ -9,5 +9,6 @@
   1. 解析requestHeader Range: bytes={start}-{end}
   2. 返回responseHeader Range: bytes 0-10/1560323
 * ~~static resource handle 50%~~
+* 优化response
 * log
 * 打包可运行jar包

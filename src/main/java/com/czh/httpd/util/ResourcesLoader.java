@@ -72,7 +72,7 @@ public class ResourcesLoader {
     public static byte[] getBytes(File file, int start, int end) {
         try {
             FileInputStream fis = new FileInputStream(file);
-            int len = end - start;
+            int len = end - start + 1;
             byte[] bytes = new byte[len];
             len = fis.read(bytes);
             return ArrayUtil.splitBytes(bytes, 0, len);

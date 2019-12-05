@@ -8,4 +8,16 @@ public class ArrayUtil {
         }
         return res;
     }
+
+    public static byte[] mergeBytes(byte[] arr1, byte[] arr2) {
+        int length = arr1.length + arr2.length;
+        byte[] res = new byte[length];
+        for (int i = 0; i < arr1.length; i++) {
+            res[i] = arr1[i];
+        }
+        for (int i = arr1.length, j = 0; i < length; i++, j++) {
+            res[i] = arr2[j];
+        }
+        return res;
+    }
 }
