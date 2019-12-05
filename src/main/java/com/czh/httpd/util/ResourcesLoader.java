@@ -69,10 +69,11 @@ public class ResourcesLoader {
         return new byte[0];
     }
 
-    public static byte[] getBytes(File file, int start, int end) {
+    public static byte[] getBytes(File file, int start, long end) {
         try {
             FileInputStream fis = new FileInputStream(file);
-            int len = end - start + 1;
+            // TODO 做如果超过了请求长度超过了int最大值处理
+            int len = (int) (end - start + 1);
             byte[] bytes = new byte[len];
             len = fis.read(bytes);
             return ArrayUtil.splitBytes(bytes, 0, len);

@@ -23,7 +23,6 @@ public class ResponseHeaderFactory {
         header.setStatusName(httpStatus.getReasonPhrase());
         header.setHeader("Server", "czh Server/0.0.1");
         header.setHeader("Date", new Date().toString());
-        // TODO delete
         header.setHeader("Cookie", cookie);
         return header;
     }

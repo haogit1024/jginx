@@ -89,8 +89,12 @@ public class MyTest {
     public void testContentType() {
         String filePath = "D:\\www\\test.png";
         File file = new File(filePath);
-        System.out.println(file.exists());
-        String type = new MimetypesFileTypeMap().getContentType(file);
-        System.out.println(type);
+//        System.out.println(file.exists());
+//        String type = new MimetypesFileTypeMap().getContentType(file);
+//        System.out.println(type);
+        long length = file.length();
+        System.out.println("length: " + length);
+        System.out.println(length / 1024 / 1024);
+        System.out.printf("%d", 1L);
     }
 }

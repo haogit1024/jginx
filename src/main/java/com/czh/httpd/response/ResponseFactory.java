@@ -56,12 +56,15 @@ public class ResponseFactory {
             try {
                 int[] rangeArr = HttpHeaderUtil.parseRequestRange(range);
                 int start = rangeArr[0];
-                int end = rangeArr[1];
-                int len = end - start + 1;
+                long end = rangeArr[1];
+                long len = end - start + 1;
+                if (end > file.length() - 1) {
+                    end = file.length() - 1;
+                }
                 content = ResourcesLoader.getBytes(file, start, end);
                 String responseRange = String.format("bytes %d-%d/%d", start, end, file.length());
                 System.out.println("responseRange: " + responseRange);
-                responseHeader.setHeader("Content-Length", String.valueOf(len));
+                responseHeader.setHeader("Content-Length", String.valueOf(content.length));
                 responseHeader.setHeader("Content-Range", responseRange);
                 responseHeader.setHttpStatus("206");
                 responseHeader.setStatusName(HttpStatus.PARTIAL_CONTENT.getReasonPhrase());
