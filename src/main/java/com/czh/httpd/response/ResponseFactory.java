@@ -64,8 +64,7 @@ public class ResponseFactory {
                 System.out.println("responseRange: " + responseRange);
                 responseHeader.setHeader("Content-Length", String.valueOf(content.length));
                 responseHeader.setHeader("Content-Range", responseRange);
-                responseHeader.setHttpStatus("206");
-                responseHeader.setStatusName(HttpStatus.PARTIAL_CONTENT.getReasonPhrase());
+                responseHeader.setHttpStatus(HttpStatus.valueOf(206));
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
                 System.out.println("处理Range出错");

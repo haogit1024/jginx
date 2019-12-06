@@ -19,8 +19,7 @@ public class ResponseHeaderFactory {
     public static BaseResponseHeader getBaseResponseHeader(String cookie, HttpStatus httpStatus) {
         BaseResponseHeader header = new SimpleResponseHeader();
         header.setHttpVersion("HTTP/1.1");
-        header.setHttpStatus(httpStatus.getValue());
-        header.setStatusName(httpStatus.getReasonPhrase());
+        header.setHttpStatus(httpStatus);
         header.setHeader("Server", "czh Server/0.0.1");
         header.setHeader("Date", new Date().toString());
         header.setHeader("Cookie", cookie);

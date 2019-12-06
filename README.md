@@ -10,6 +10,6 @@
   ~~2. 返回responseHeader Range: bytes 0-10/1560323~~
   ~~3. 文件分块读取~~
 * ~~static resource handle 50%~~
-* 优化response
+* ~~优化response~~
 * log
 * 打包可运行jar包
