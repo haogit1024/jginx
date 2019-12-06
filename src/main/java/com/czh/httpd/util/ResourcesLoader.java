@@ -69,17 +69,29 @@ public class ResourcesLoader {
         return new byte[0];
     }
 
-    public static byte[] getBytes(File file, int start, long end) {
+    public static byte[] getBytes(File file, int start, int end) {
         try {
             FileInputStream fis = new FileInputStream(file);
-            // TODO 做如果超过了请求长度超过了int最大值处理
-            int len = (int) (end - start + 1);
+            // 指针
+            int index= 0;
+            // 指针向前移动, 一次移动1Mb, 一直移动到start
+            while (index < start) {
+                int temp = index;
+                int oneMb = 1024 * 1024;
+                index += oneMb;
+                if (index > start) {
+                    index = start;
+                }
+                byte[] bytes = new byte[index - temp];
+                fis.read(bytes);
+            }
+            int len = end - start + 1;
             byte[] bytes = new byte[len];
-            len = fis.read(bytes);
-            return ArrayUtil.splitBytes(bytes, 0, len);
+            fis.read(bytes);
+            return bytes;
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("读取文件出错");
+            System.out.println("读取文件出错, " + file.getName());
         }
         return new byte[0];
     }

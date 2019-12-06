@@ -10,7 +10,6 @@ import com.czh.httpd.util.ResourcesLoader;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.MimetypesFileTypeMap;
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -43,10 +42,8 @@ public class ResponseFactory {
         if (!file.exists()) {
             return getNotFoundResponse(cookie, url);
         }
-        System.out.println("file length: " + file.length());
         // 先粗暴处理
         String contentType = new MimetypesFileTypeMap().getContentType(file);
-        System.out.println("contentType: " + contentType);
         String range = requestHeader.getHeader("Range");
         byte[] content;
         BaseResponseHeader responseHeader = ResponseHeaderFactory.getBaseResponseHeader(cookie, HttpStatus.OK);
@@ -57,11 +54,12 @@ public class ResponseFactory {
                 int[] rangeArr = HttpHeaderUtil.parseRequestRange(range);
                 int start = rangeArr[0];
                 long end = rangeArr[1];
-                long len = end - start + 1;
                 if (end > file.length() - 1) {
                     end = file.length() - 1;
                 }
-                content = ResourcesLoader.getBytes(file, start, end);
+                long len = end - start + 1;
+                System.out.printf("start: %d, end: %s, len: %s\n", start, end, len);
+                content = ResourcesLoader.getBytes(file, start, (int)end);
                 String responseRange = String.format("bytes %d-%d/%d", start, end, file.length());
                 System.out.println("responseRange: " + responseRange);
                 responseHeader.setHeader("Content-Length", String.valueOf(content.length));

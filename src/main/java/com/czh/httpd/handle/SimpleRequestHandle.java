@@ -17,8 +17,6 @@ public class SimpleRequestHandle implements IRequestHandle {
 
     @Override
     public void setRequest(String request) throws IllegalAccessError {
-        System.out.println("request:");
-        System.out.println(request);
         this.request = request;
     }
 
@@ -34,9 +32,8 @@ public class SimpleRequestHandle implements IRequestHandle {
             String errMsg = "request格式错误: " + request;
             return ResponseFactory.getErrorResponse(errMsg, requestHeader.getCookie());
         }
-        System.out.println("requestHeader:");
-        System.out.println(requestHeader);
-        String range = requestHeader.getHeader("Range");
+//        System.out.println("requestHeader:");
+//        System.out.println(requestHeader);
         return ResponseFactory.getResponseByUrl(requestHeader.getUrl(), requestHeader.getCookie(), requestHeader);
     }
 }

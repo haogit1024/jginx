@@ -40,8 +40,8 @@ public class HttpThread extends Thread {
                 response = ResponseFactory.getIndexResponse("");
             }
             OutputStream ost = socket.getOutputStream();
-            System.out.println("responseHeader: ");
-            System.out.println(response.getResponseHeader().build());
+//            System.out.println("responseHeader: ");
+//            System.out.println(response.getResponseHeader().build());
 //            ost.write(response.getResponseHeader().build().getBytes());
 //            ost.write(response.getResponseContent());
             byte[] res = ArrayUtil.mergeBytes(response.getResponseHeader().build().getBytes(), response.getResponseContent());
