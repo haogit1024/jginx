@@ -7,7 +7,7 @@ import com.czh.httpd.header.BaseResponseHeader;
 import com.czh.httpd.header.ResponseHeaderFactory;
 import com.czh.httpd.util.HttpHeaderUtil;
 import com.czh.httpd.util.ResourcesLoader;
-import org.apache.commons.lang3.StringUtils;
+import com.czh.httpd.util.StringUtils;
 
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;

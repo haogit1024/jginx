@@ -2,7 +2,7 @@ package com.czh.httpd.header;
 
 import com.czh.httpd.App;
 import com.czh.httpd.exception.HeaderFormatException;
-import org.apache.commons.lang3.StringUtils;
+import com.czh.httpd.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;

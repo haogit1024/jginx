@@ -5,7 +5,7 @@ import com.czh.httpd.handle.SimpleRequestHandle;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.response.ResponseFactory;
 import com.czh.httpd.util.ArrayUtil;
-import org.apache.commons.lang3.StringUtils;
+import com.czh.httpd.util.StringUtils;
 
 import java.io.*;
 import java.net.Socket;
