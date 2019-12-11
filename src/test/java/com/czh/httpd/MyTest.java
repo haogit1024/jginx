@@ -1,5 +1,6 @@
 package com.czh.httpd;
 
+import com.czh.httpd.enums.HttpStatus;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.util.ResourcesLoader;
 import org.junit.jupiter.api.Test;
@@ -96,5 +97,12 @@ public class MyTest {
         System.out.println("length: " + length);
         System.out.println(length / 1024 / 1024);
         System.out.printf("%d", 1L);
+    }
+
+    @Test
+    public void testEnum() {
+        HttpStatus httpStatus = HttpStatus.valueOf(200);
+        System.out.println(httpStatus.value());
+        System.out.println(httpStatus.getReasonPhrase());
     }
 }

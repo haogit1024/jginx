@@ -3,7 +3,6 @@ package com.czh.httpd.thread;
 import com.czh.httpd.handle.IRequestHandle;
 import com.czh.httpd.handle.SimpleRequestHandle;
 import com.czh.httpd.response.Response;
-import com.czh.httpd.response.ResponseFactory;
 import com.czh.httpd.util.ArrayUtil;
 import com.czh.httpd.util.StringUtils;
 
@@ -30,22 +29,22 @@ public class HttpThread extends Thread {
             byte[] bytes = new byte[inputStream.available()];
             int len = inputStream.read(bytes);
             String requestData = new String(bytes, 0, len);
+            System.out.println(requestData);
+            System.out.println("----------");
             Response response;
             if (StringUtils.isNotBlank(requestData)) {
                 IRequestHandle requestHandle = new SimpleRequestHandle();
                 requestHandle.setRequest(requestData);
                 response = requestHandle.getResponse();
-            } else {
-                // 空请求头处理
-                response = ResponseFactory.getIndexResponse("");
+                OutputStream ost = socket.getOutputStream();
+                byte[] res = ArrayUtil.mergeBytes(response.getResponseHeader().build().getBytes(), response.getResponseContent());
+                ost.write(res);
+
             }
-            OutputStream ost = socket.getOutputStream();
 //            System.out.println("responseHeader: ");
 //            System.out.println(response.getResponseHeader().build());
 //            ost.write(response.getResponseHeader().build().getBytes());
 //            ost.write(response.getResponseContent());
-            byte[] res = ArrayUtil.mergeBytes(response.getResponseHeader().build().getBytes(), response.getResponseContent());
-            ost.write(res);
             socket.shutdownOutput();
             socket.getInputStream();
             socket.close();

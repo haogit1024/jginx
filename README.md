@@ -12,6 +12,6 @@
 * ~~static resource handle 50%~~
 * ~~优化response~~
 * ~~打包可运行jar包~~
-* 自定义StringUtils
+* ~~自定义StringUtils~~
 * 自定义log
 * 参数配置和配置文件
