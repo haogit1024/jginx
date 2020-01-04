@@ -1,5 +1,9 @@
 package com.czh.httpd.log;
 
+/**
+ * @author czh
+ * 简单的日志工具
+ */
 public class SimpleLogger implements Logger {
     @Override
     public void debug(String s) {

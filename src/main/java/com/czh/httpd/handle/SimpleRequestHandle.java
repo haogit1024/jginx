@@ -6,6 +6,8 @@ import com.czh.httpd.header.SimpleRequestHeader;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.response.ResponseFactory;
 
+import java.io.IOException;
+
 /**
  * @author czh
  * 请求处理类
@@ -34,6 +36,11 @@ public class SimpleRequestHandle implements IRequestHandle {
         }
 //        System.out.println("requestHeader:");
 //        System.out.println(requestHeader);
-        return ResponseFactory.getResponseByUrl(requestHeader.getUrl(), requestHeader.getCookie(), requestHeader);
+        try {
+            return ResponseFactory.getResponseByUrl(requestHeader.getUrl(), requestHeader.getCookie(), requestHeader);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("读取资源文件权限错误" + e.getMessage());
+        }
     }
 }

@@ -31,9 +31,6 @@ public class ServerSocketTest {
                 Socket socket = serverSocket.accept();
                 InputStream in = socket.getInputStream();
                 String inputContent = StreamUtil.getContent(in, "");
-//                byte[] bytes = new byte[in.available()];
-//                in.read(bytes);
-//                String inputContent = new String(bytes);
                 System.out.println("inputContent: " + inputContent);
                 sendResponse(socket);
                 socket.close();

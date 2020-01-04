@@ -37,6 +37,7 @@ public class App {
 
     public static final String INDEX_PAGE = "/static/index.html";
     public static void main(String[] args) {
+    	// TODO 监听一个端口执行关闭操作
         try {
             ServerSocket server = new ServerSocket(8098);
             System.out.println("启动成功");

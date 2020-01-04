@@ -12,6 +12,7 @@ import com.czh.httpd.util.StringUtils;
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -32,7 +33,15 @@ public class ResponseFactory {
         return getResponseByResource("/static/404.html", cookie, HttpStatus.NOT_FOUND, url);
     }
 
-    public static Response getResponseByUrl(String url, String cookie, BaseRequestHeader requestHeader) {
+    /**
+     *
+     * @param url
+     * @param cookie
+     * @param requestHeader
+     * @return
+     * @throws IOException 权限不足
+     */
+    public static Response getResponseByUrl(String url, String cookie, BaseRequestHeader requestHeader) throws IOException {
         System.out.println("url: " + url);
         if ("/".equals(url)) {
             return getIndexResponse(cookie);
@@ -43,7 +52,8 @@ public class ResponseFactory {
             return getNotFoundResponse(cookie, url);
         }
         // 先粗暴处理
-        String contentType = new MimetypesFileTypeMap().getContentType(file);
+//        String contentType = new MimetypesFileTypeMap().getContentType(file);
+        String contentType = Files.probeContentType(path);
         String range = requestHeader.getHeader("Range");
         byte[] content;
         BaseResponseHeader responseHeader = ResponseHeaderFactory.getBaseResponseHeader(cookie, HttpStatus.OK);
