@@ -15,7 +15,7 @@ public class StreamUtil {
             // 注意指定编码格式，发送方和接收方一定要统一，建议使用UTF-8
             sb.append(line).append("/r/n");
             // TODO 查一下为什么空行不停止会返回""
-            if (line.isEmpty()) {
+            if (StringUtils.isBlank(line)) {
                 break;
             }
         }

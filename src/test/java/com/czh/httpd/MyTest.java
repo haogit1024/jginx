@@ -13,6 +13,12 @@ import java.nio.file.Paths;
 import java.util.Date;
 
 public class MyTest {
+
+    @Test
+    public void testPrint() {
+        System.out.println(File.separator);
+    }
+
     @Test
     public void testString() {
         final String CRLF="\r\n";
@@ -101,8 +107,18 @@ public class MyTest {
 
     @Test
     public void testEnum() {
-        HttpStatus httpStatus = HttpStatus.valueOf(200);
-        System.out.println(httpStatus.value());
-        System.out.println(httpStatus.getReasonPhrase());
+//        HttpStatus httpStatus = HttpStatus.valueOf(800);
+//        System.out.println(httpStatus == null);
+//        System.out.println(httpStatus.value());
+//        System.out.println(httpStatus.getReasonPhrase());
+
+        File file = new File("D:\\tomcat\\apache-tomcat-9.0.19\\webapps\\test\\test.png");
+//        if (!file.exists()) {
+//            return getNotFoundResponse(cookie, url);
+//        }
+        // 先粗暴处理
+        String contentType = new MimetypesFileTypeMap().getContentType(file);
+
+        System.out.println(contentType);
     }
 }
