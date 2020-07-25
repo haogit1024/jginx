@@ -45,6 +45,7 @@ public class ResourcesLoader {
      * @return
      */
     public static String getContent(File file) {
+    	// TODO 关闭流
         try {
             FileInputStream fis = new FileInputStream(file);
             byte[] bytes = new byte[fis.available()];
@@ -57,6 +58,7 @@ public class ResourcesLoader {
     }
 
     public static byte[] getBytes(File file) {
+    	// TODO 关闭流
         try {
             FileInputStream fis = new FileInputStream(file);
             byte[] bytes = new byte[fis.available()];
@@ -70,8 +72,9 @@ public class ResourcesLoader {
     }
 
     public static byte[] getBytes(File file, int start, int end) {
+    	FileInputStream fis = null;
         try {
-            FileInputStream fis = new FileInputStream(file);
+            fis = new FileInputStream(file);
             // 指针
             int index= 0;
             // 指针向前移动, 一次移动1Mb, 一直移动到start
@@ -92,6 +95,14 @@ public class ResourcesLoader {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("读取文件出错, " + file.getName());
+        } finally {
+        	if (fis != null) {
+        		try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
         return new byte[0];
     }
@@ -104,13 +115,22 @@ public class ResourcesLoader {
      * @return
      */
     public static String getContent(File file, int off, int len) {
+    	FileInputStream fis = null;
         try {
-            FileInputStream fis = new FileInputStream(file);
+            fis = new FileInputStream(file);
             byte[] bytes = new byte[len];
             len = fis.read(bytes, off, len);
             return new String(bytes, 0, len);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+        	if (fis != null) {
+        		try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
         return "";
     }

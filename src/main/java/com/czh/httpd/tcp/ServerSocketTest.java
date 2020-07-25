@@ -21,6 +21,7 @@ public class ServerSocketTest {
     private static final String OUTPUT_END_OF_HEADERS = "\r\n\r\n";
 
     public void start() {
+    	// TODO 关闭serverSocket
         try {
             ServerSocket serverSocket = new ServerSocket(9002);
             boolean isStop = false;

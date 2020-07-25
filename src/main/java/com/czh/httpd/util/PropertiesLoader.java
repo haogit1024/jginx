@@ -50,12 +50,20 @@ public class PropertiesLoader {
      * @return
      * @throws IOException
      */
-    public static PropertiesLoader newInstance(String propertiesFilePath) throws IOException {
+    public static PropertiesLoader instance(String propertiesFilePath) {
         if (map.get(propertiesFilePath) == null) {
             synchronized (PropertiesLoader.class) {
                 if (map.get(propertiesFilePath) == null) {
-                    PropertiesLoader propertiesLoader = new PropertiesLoader(propertiesFilePath);
-                    map.put(propertiesFilePath, propertiesLoader);
+                    PropertiesLoader propertiesLoader;
+					try {
+						propertiesLoader = new PropertiesLoader(propertiesFilePath);
+						map.put(propertiesFilePath, propertiesLoader);
+					} catch (IOException e) {
+						e.printStackTrace();
+						// TODO 完善信息
+						System.err.println("");
+						System.exit(0);
+					}
                 }
             }
         }
