@@ -14,7 +14,7 @@ import java.net.Socket;
  * 处理http请求的线程, 每一个http请求生成一条线程
  */
 public class HttpThread extends Thread {
-    private Socket socket;
+    private final Socket socket;
 
     public HttpThread(Socket socket) {
         this.socket = socket;
@@ -51,7 +51,7 @@ public class HttpThread extends Thread {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("socket已关闭");
+            System.out.println("socket已关闭 jginx");
         }
     }
 }
