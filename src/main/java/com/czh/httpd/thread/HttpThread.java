@@ -10,7 +10,7 @@ import java.io.*;
 import java.net.Socket;
 
 /**
- * @author chenzh
+ * @author czh
  * 处理http请求的线程, 每一个http请求生成一条线程
  */
 public class HttpThread extends Thread {
@@ -33,6 +33,7 @@ public class HttpThread extends Thread {
             System.out.println("----------");
             Response response;
             if (StringUtils.isNotBlank(requestData)) {
+                // TODO 1. 获取requestBody  2. 根据requestBody去生成不同的 requestHandler(可以通过工厂方法实现)
                 IRequestHandle requestHandle = new SimpleRequestHandle();
                 requestHandle.setRequest(requestData);
                 response = requestHandle.getResponse();

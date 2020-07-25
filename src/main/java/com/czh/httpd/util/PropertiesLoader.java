@@ -38,10 +38,10 @@ public class PropertiesLoader {
     public String getProperty(String key) {
         return properties.getProperty(key);
     }
-    
+
     public void display() {
-    	Set<Map.Entry<Object, Object>> set = properties.entrySet();
-    	set.forEach(entry -> System.out.printf("key: %s, val: %s \n", entry.getKey(), entry.getValue()));
+        Set<Map.Entry<Object, Object>> set = properties.entrySet();
+        set.forEach(entry -> System.out.printf("key: %s, val: %s \n", entry.getKey(), entry.getValue()));
     }
 
     /**
@@ -55,15 +55,15 @@ public class PropertiesLoader {
             synchronized (PropertiesLoader.class) {
                 if (map.get(propertiesFilePath) == null) {
                     PropertiesLoader propertiesLoader;
-					try {
-						propertiesLoader = new PropertiesLoader(propertiesFilePath);
-						map.put(propertiesFilePath, propertiesLoader);
-					} catch (IOException e) {
-						e.printStackTrace();
-						// TODO 完善信息
-						System.err.println("");
-						System.exit(0);
-					}
+                    try {
+                        propertiesLoader = new PropertiesLoader(propertiesFilePath);
+                        map.put(propertiesFilePath, propertiesLoader);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        // TODO 完善错误信息
+                        System.err.println();
+                        System.exit(0);
+                    }
                 }
             }
         }
