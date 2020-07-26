@@ -1,5 +1,6 @@
 package com.czh.httpd.handle;
 
+import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.response.ResponseFactory;
 
@@ -9,14 +10,12 @@ import com.czh.httpd.response.ResponseFactory;
  * @data 2020/07/25
  */
 public class ErrorRequestHandler implements IRequestHandler {
-	private String errorMsg;
+	private BaseRequestHeader requestHeader;
 
-	public void setErrorMsg(String errorMsg) {
+	private final String errorMsg;
+
+	public ErrorRequestHandler(String errorMsg) {
 		this.errorMsg = errorMsg;
-	}
-
-	public String getErrorMsg() {
-		return errorMsg;
 	}
 
 	@Override
@@ -26,10 +25,15 @@ public class ErrorRequestHandler implements IRequestHandler {
 	}
 
 	@Override
+	public void setRequest(BaseRequestHeader requestHeader, String requestContent) {
+		this.requestHeader = requestHeader;
+	}
+
+	@Override
 	public Response getResponse() {
 		// TODO Auto-generated method stub
-//		return ResponseFactory.getErrorResponse(errorMsg, requestHeader.getCookie());
-		return null;
+		return ResponseFactory.getErrorResponse(errorMsg, requestHeader.getCookie());
+//		return null;
 	}
 
 }

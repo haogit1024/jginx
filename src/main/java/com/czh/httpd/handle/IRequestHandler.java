@@ -1,8 +1,10 @@
 package com.czh.httpd.handle;
 
+import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.response.Response;
 
 /**
+ * // TODO 改成抽象类
  * @author czh
  * 处理请求类
  */
@@ -16,7 +18,12 @@ public interface IRequestHandler {
      */
     void setRequest(String request) throws IllegalAccessError;
 
-    void setRequest(String requestHeader, String requestContent);
+    /**
+     * 设置请求头和请求体
+     * @param requestHeader
+     * @param requestContent
+     */
+    void setRequest(BaseRequestHeader requestHeader, String requestContent);
 
     /**
      * 根据请求返回相应的响应

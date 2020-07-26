@@ -23,23 +23,23 @@ public class SimpleRequestHandler implements IRequestHandler {
     }
 
     @Override
-    public void setRequest(String requestHeader, String requestContent) {
-        this.requestHeader = new SimpleRequestHeader(requestHeader);
+    public void setRequest(BaseRequestHeader requestHeader, String requestContent) {
+        this.requestHeader = requestHeader;
         this.requestContent = requestContent;
     }
 
     @Override
     public Response getResponse() {
-        String[] reqArray = request.split(App.CRLF + App.CRLF);
-        if (reqArray.length == 1) {
-            requestHeader = new SimpleRequestHeader(reqArray[0]);
-        } else if (reqArray.length == 2) {
-            requestHeader = new SimpleRequestHeader(reqArray[0]);
-            requestContent = reqArray[1];
-        } else {
-            String errMsg = "request格式错误: " + request;
-            return ResponseFactory.getErrorResponse(errMsg, requestHeader.getCookie());
-        }
+//        String[] reqArray = request.split(App.CRLF + App.CRLF);
+//        if (reqArray.length == 1) {
+//            requestHeader = new SimpleRequestHeader(reqArray[0]);
+//        } else if (reqArray.length == 2) {
+//            requestHeader = new SimpleRequestHeader(reqArray[0]);
+//            requestContent = reqArray[1];
+//        } else {
+//            String errMsg = "request格式错误: " + request;
+//            return ResponseFactory.getErrorResponse(errMsg, requestHeader.getCookie());
+//        }
 //        System.out.println("requestHeader:");
 //        System.out.println(requestHeader);
         try {
