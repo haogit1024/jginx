@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author czh
  * 请求处理类
  */
-public class SimpleRequestHandle implements IRequestHandle {
+public class SimpleRequestHandler implements IRequestHandler {
     private String request;
     private BaseRequestHeader requestHeader;
     private String requestContent;
@@ -20,6 +20,12 @@ public class SimpleRequestHandle implements IRequestHandle {
     @Override
     public void setRequest(String request) throws IllegalAccessError {
         this.request = request;
+    }
+
+    @Override
+    public void setRequest(String requestHeader, String requestContent) {
+        this.requestHeader = new SimpleRequestHeader(requestHeader);
+        this.requestContent = requestContent;
     }
 
     @Override

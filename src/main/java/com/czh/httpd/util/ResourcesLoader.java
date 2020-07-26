@@ -45,28 +45,44 @@ public class ResourcesLoader {
      * @return
      */
     public static String getContent(File file) {
-    	// TODO 关闭流
+    	FileInputStream fis = null;
         try {
-            FileInputStream fis = new FileInputStream(file);
+            fis = new FileInputStream(file);
             byte[] bytes = new byte[fis.available()];
             int len = fis.read(bytes);
             return new String(bytes, 0, len);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+        	if (fis != null) {
+        		try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
         return "";
     }
 
     public static byte[] getBytes(File file) {
-    	// TODO 关闭流
+    	FileInputStream fis = null;
         try {
-            FileInputStream fis = new FileInputStream(file);
+            fis = new FileInputStream(file);
             byte[] bytes = new byte[fis.available()];
             int len = fis.read(bytes);
             return ArrayUtil.splitBytes(bytes, 0, len);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("读取文件出错");
+        } finally {
+        	if (fis != null) {
+        		try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
         return new byte[0];
     }

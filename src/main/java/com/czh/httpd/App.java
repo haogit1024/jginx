@@ -1,5 +1,6 @@
 package com.czh.httpd;
 
+import com.czh.httpd.properties.SettingProperties;
 import com.czh.httpd.thread.HttpThread;
 
 import java.io.IOException;
@@ -37,18 +38,42 @@ public class App {
 
     public static final String INDEX_PAGE = "/static/index.html";
     public static void main(String[] args) {
-    	// TODO 监听一个端口执行关闭操作
-        // 读取配置
-        try {
-            ServerSocket server = new ServerSocket(8098);
-            System.out.println("启动成功");
-            while (RUN_ABLE) {
-                Socket socket = server.accept();
-                new HttpThread(socket).start();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SettingProperties settingProperties = SettingProperties.instance();
+        initHttpThread(settingProperties.getGuardPort());
+    }
 
+    private static void initHttpThread(Integer serverPort) {
+        new Thread(() -> {
+            try {
+                ServerSocket server = new ServerSocket(serverPort);
+                System.out.println("启动成功");
+                while (RUN_ABLE) {
+                    Socket socket = server.accept();
+                    new HttpThread(socket).start();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    /**
+     * 初始化一个守护线程, 用来管理运行中的程序
+     * 方案废弃, 改用生成不同的IResponseHandle来处理
+     */
+    @Deprecated
+    private static void initGuardThread(Integer guardPort) {
+        new Thread(() -> {
+            try {
+                ServerSocket server = new ServerSocket(guardPort);
+                System.out.println("启动成功");
+                while (RUN_ABLE) {
+                    Socket socket = server.accept();
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }

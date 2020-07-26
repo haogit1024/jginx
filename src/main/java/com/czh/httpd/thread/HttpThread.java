@@ -1,7 +1,7 @@
 package com.czh.httpd.thread;
 
-import com.czh.httpd.handle.IRequestHandle;
-import com.czh.httpd.handle.SimpleRequestHandle;
+import com.czh.httpd.handle.IRequestHandler;
+import com.czh.httpd.handle.SimpleRequestHandler;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.util.ArrayUtil;
 import com.czh.httpd.util.StringUtils;
@@ -34,7 +34,7 @@ public class HttpThread extends Thread {
             Response response;
             if (StringUtils.isNotBlank(requestData)) {
                 // TODO 1. 获取requestBody  2. 根据requestBody去生成不同的 requestHandler(可以通过工厂方法实现)
-                IRequestHandle requestHandle = new SimpleRequestHandle();
+                IRequestHandler requestHandle = new SimpleRequestHandler();
                 requestHandle.setRequest(requestData);
                 response = requestHandle.getResponse();
                 OutputStream ost = socket.getOutputStream();
