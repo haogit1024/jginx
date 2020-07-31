@@ -1,6 +1,13 @@
 package com.czh.httpd.response;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import com.czh.httpd.App;
+import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.enums.HttpStatus;
 import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.header.BaseResponseHeader;
@@ -9,28 +16,21 @@ import com.czh.httpd.util.HttpHeaderUtil;
 import com.czh.httpd.util.ResourcesLoader;
 import com.czh.httpd.util.StringUtils;
 
-import javax.activation.MimetypesFileTypeMap;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 /**
  * @author czh
  * 响应工厂类
  */
 public class ResponseFactory {
     public static Response getIndexResponse(String cookie) {
-        return getResponseByResource("/static/index.html", cookie, HttpStatus.OK, "");
+        return getResponseByResource(CommonConstants.Page.INDEX, cookie, HttpStatus.OK, "");
     }
 
     public static Response getErrorResponse(String message, String cookie) {
-        return getResponseByResource("/static/error.html", cookie, HttpStatus.INTERNAL_SERVER_ERROR, message);
+        return getResponseByResource(CommonConstants.Page.ERROR, cookie, HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 
     public static Response getNotFoundResponse(String cookie, String url) {
-        return getResponseByResource("/static/404.html", cookie, HttpStatus.NOT_FOUND, url);
+        return getResponseByResource(CommonConstants.Page.NOT_FOUND, cookie, HttpStatus.NOT_FOUND, url);
     }
 
     /**

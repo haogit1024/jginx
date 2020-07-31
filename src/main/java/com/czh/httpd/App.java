@@ -1,5 +1,6 @@
 package com.czh.httpd;
 
+import com.czh.httpd.exception.BaseException;
 import com.czh.httpd.properties.SettingProperties;
 import com.czh.httpd.thread.HttpThread;
 
@@ -38,14 +39,20 @@ public class App {
 
     public static final String INDEX_PAGE = "/static/index.html";
     public static void main(String[] args) {
-        SettingProperties settingProperties = SettingProperties.instance();
-        initHttpThread(settingProperties.getGuardPort());
+        try {
+            initHttpThread(SettingProperties.SERVER_PORT);
+        } catch (BaseException e) {
+            e.printStackTrace();
+            // TODO 自定义异常处理
+        }
     }
 
     private static void initHttpThread(Integer serverPort) {
+        // TODO 修改为线程池
         new Thread(() -> {
+        	ServerSocket server = null;
             try {
-                ServerSocket server = new ServerSocket(serverPort);
+                server = new ServerSocket(serverPort);
                 System.out.println("启动成功");
                 while (RUN_ABLE) {
                     Socket socket = server.accept();
@@ -53,7 +60,18 @@ public class App {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } catch (BaseException e) {
+                // TODO 自定http义异常处理
+                e.printStackTrace();
+            } finally {
+				if (server != null) {
+					try {
+						server.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
         }).start();
     }
 
