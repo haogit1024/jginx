@@ -46,10 +46,17 @@ public class ResponseFactory {
         if ("/".equals(url)) {
             return getIndexResponse(cookie);
         }
+        // 先查找指定工作目录
         Path path = Paths.get(App.WORK_SPACE, url);
         File file = path.toFile();
+        // /favicon.ico
         if (!file.exists()) {
-            return getNotFoundResponse(cookie, url);
+            // 如果没有, 就读取 static
+            file = ResourcesLoader.getResourceFromUrlAsFile(url);
+            if (file == null) {
+                // 如果 static 没有, 则返回404
+                return getNotFoundResponse(cookie, url);
+            }
         }
         // 先粗暴处理
 //        String contentType = new MimetypesFileTypeMap().getContentType(file);
@@ -58,6 +65,7 @@ public class ResponseFactory {
         byte[] content;
         BaseResponseHeader responseHeader = ResponseHeaderFactory.getBaseResponseHeader(cookie, HttpStatus.OK);
         if (StringUtils.isNotBlank(range)) {
+            // Range 请求头支持
             System.out.println("Range: " + range);
             contentType = "image/png";
             try {
@@ -83,6 +91,7 @@ public class ResponseFactory {
         } else {
             System.out.println("not range");
             content = ResourcesLoader.getBytes(file);
+            System.out.println("content length: " + content.length);
             responseHeader.setHeader("Content-Length", String.valueOf(file.length()));
         }
         responseHeader.setHeader("Content-Type", contentType);
@@ -90,7 +99,7 @@ public class ResponseFactory {
     }
 
     private static Response getResponseByResource(String resourcePath, String cookie, HttpStatus httpStatus, String message) {
-        String content = "";
+        String content;
         try {
             content = ResourcesLoader.getResourceAsString(resourcePath);
         } catch (IOException e) {

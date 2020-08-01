@@ -1,6 +1,7 @@
 package com.czh.httpd.thread;
 
 import com.czh.httpd.handle.IRequestHandler;
+import com.czh.httpd.handle.RequestHandlerFactory;
 import com.czh.httpd.handle.SimpleRequestHandler;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.util.ArrayUtil;
@@ -29,18 +30,17 @@ public class HttpThread extends Thread {
             byte[] bytes = new byte[inputStream.available()];
             int len = inputStream.read(bytes);
             String requestData = new String(bytes, 0, len);
+            System.out.println("-----request data begin-----");
             System.out.println(requestData);
-            System.out.println("----------");
+            System.out.println("-----request data end-----");
             Response response;
             if (StringUtils.isNotBlank(requestData)) {
-                // TODO 1. 获取requestBody  2. 根据requestBody去生成不同的 requestHandler(可以通过工厂方法实现)
-                IRequestHandler requestHandle = new SimpleRequestHandler();
-                requestHandle.setRequest(requestData);
-                response = requestHandle.getResponse();
+                IRequestHandler requestHandler = RequestHandlerFactory.getNewHandler(requestData);
+                requestHandler.setRequest(requestData);
+                response = requestHandler.getResponse();
                 OutputStream ost = socket.getOutputStream();
                 byte[] res = ArrayUtil.mergeBytes(response.getResponseHeader().build().getBytes(), response.getResponseContent());
                 ost.write(res);
-
             }
 //            System.out.println("responseHeader: ");
 //            System.out.println(response.getResponseHeader().build());

@@ -1,10 +1,8 @@
 package com.czh.httpd.header;
 
-import com.czh.httpd.App;
+import com.czh.httpd.constant.CommonConstants;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleRequestHeaderTest {
 
@@ -26,7 +24,7 @@ class SimpleRequestHeaderTest {
         System.out.println(headerArray.length);
         for (String headerItem : headerArray) {
             if (StringUtils.isNotBlank(headerItem)) {
-                String[] itemArray = headerItem.split(App.HEADER_SEPARATOR);
+                String[] itemArray = headerItem.split(CommonConstants.Symbol.HEADER_SEPARATOR);
                 simpleRequestHeader.setHeader(itemArray[0], itemArray[1]);
             }
         }

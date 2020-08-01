@@ -1,17 +1,37 @@
 package com.czh.httpd.util;
 
+import com.czh.httpd.constant.CommonConstants;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 /**
  * @author chenzh
  * 资源加载器
  */
 public class ResourcesLoader {
+    /**
+     * 根据 http 中的 url 读取资源
+     * @param url   http 请求头中的url, demo: /hello.html
+     * @return  file, 如果找不到文件返回 null
+     */
+    public static File getResourceFromUrlAsFile(String url) throws IOException {
+        final String filePath = CommonConstants.Symbol.RESOURCE_DIR + url;
+        URL resourceUrl = ResourcesLoader.class.getResource(filePath);
+        if (resourceUrl == null) {
+            return null;
+        }
+        return new File(resourceUrl.getFile());
+    }
+
     public static String getResourceAsString(String filePath) throws IOException {
         InputStream inputStream = ResourcesLoader.class.getResourceAsStream(filePath);
+        if (inputStream == null) {
+            return null;
+        }
 //        StringBuilder sb = new StringBuilder();
 //        // 一次读取一MB
 //        byte[] bytes = new byte[1024 * 1024];
@@ -28,6 +48,9 @@ public class ResourcesLoader {
     public static byte[] getResourceAsBytes(String filePath) {
         try {
             InputStream inputStream = ResourcesLoader.class.getResourceAsStream(filePath);
+            if (inputStream == null) {
+                return null;
+            }
             byte[] bytes = new byte[inputStream.available()];
             int len = inputStream.read(bytes);
             return ArrayUtil.splitBytes(bytes, 0, len);

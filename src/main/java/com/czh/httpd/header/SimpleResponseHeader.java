@@ -1,6 +1,7 @@
 package com.czh.httpd.header;
 
 import com.czh.httpd.App;
+import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.enums.HttpStatus;
 
 /**
@@ -17,7 +18,7 @@ public class SimpleResponseHeader extends BaseResponseHeader {
 
     @Override
     public void setFirstLine(String line) throws IllegalArgumentException {
-        String[] statusLineArray = line.split(App.SPACE);
+        String[] statusLineArray = line.split(CommonConstants.Symbol.SPACE);
         int statusLineLength = statusLineArray.length;
         if (statusLineLength != 3) {
             throw new IllegalArgumentException("相应状态行格式错误, " + line);
@@ -30,7 +31,7 @@ public class SimpleResponseHeader extends BaseResponseHeader {
 
     @Override
     public String getFirstLine() {
-        return this.httpVersion + App.SPACE + this.httpStatus.value() + App.SPACE + this.httpStatus.getReasonPhrase();
+        return this.httpVersion + CommonConstants.Symbol.SPACE + this.httpStatus.value() + CommonConstants.Symbol.SPACE + this.httpStatus.getReasonPhrase();
     }
 
     @Override

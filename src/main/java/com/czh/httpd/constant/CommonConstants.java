@@ -6,6 +6,30 @@ package com.czh.httpd.constant;
  * @date 2020/07/25
  */
 public interface CommonConstants {
+    class Symbol {
+        /**
+         * http换行符
+         */
+        public static final String CRLF="\r\n";
+
+        /**
+         * 空格
+         */
+        public static final String SPACE =" ";
+
+        /**
+         * http头分隔符
+         */
+        public static final String HEADER_SEPARATOR = ": ";
+
+        /**
+         * 工作目录
+         */
+        public static final String WORK_SPACE = "D:\\www";
+
+        public static final String RESOURCE_DIR = "/static";
+    }
+
     class Page {
         /**
          * 首页

@@ -1,6 +1,7 @@
 package com.czh.httpd.handle;
 
 import com.czh.httpd.App;
+import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.header.SimpleRequestHeader;
 
@@ -12,13 +13,15 @@ public class RequestHandlerFactory {
     public static IRequestHandler getNewHandler(String request) {
         BaseRequestHeader requestHeader;
         String requestContent;
-        String[] reqArray = request.split(App.CRLF + App.CRLF);
+        String[] reqArray = request.split(CommonConstants.Symbol.CRLF + CommonConstants.Symbol.CRLF);
         IRequestHandler requestHandler;
         if (reqArray.length == 1) {
+            // 没有请求体
             requestHeader = new SimpleRequestHeader(reqArray[0]);
             requestHandler = new SimpleRequestHandler();
             requestHandler.setRequest(requestHeader, "");
         } else if (reqArray.length == 2) {
+            // 有请求体
             requestHeader = new SimpleRequestHeader(reqArray[0]);
             requestContent = reqArray[1];
             requestHandler = new SimpleRequestHandler();

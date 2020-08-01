@@ -1,6 +1,7 @@
 package com.czh.httpd.util;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,5 +32,11 @@ class ResourcesLoaderTest {
 //        System.out.println(file.exists());
         byte[] bytes = ResourcesLoader.getBytes(file, 1025, (int)(file.length() - 1));
         System.out.println(new String(bytes));
+    }
+
+    @Test
+    void getResourceFromUrlAsString() throws IOException {
+        String name = ResourcesLoader.class.getResource("/static/fuck.html").getFile();
+        System.out.println(name);
     }
 }

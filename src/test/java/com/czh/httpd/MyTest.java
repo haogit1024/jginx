@@ -1,5 +1,6 @@
 package com.czh.httpd;
 
+import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.enums.HttpStatus;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.util.ResourcesLoader;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -59,8 +61,8 @@ public class MyTest {
 
     @Test
     public void testSplit() {
-        String s = "a" + App.CRLF + "B" + App.CRLF + App.CRLF + App.CRLF + App.CRLF;
-        String[] array = s.split(App.CRLF);
+        String s = "a" + CommonConstants.Symbol.CRLF + "B" + CommonConstants.Symbol.CRLF + CommonConstants.Symbol.CRLF + CommonConstants.Symbol.CRLF + CommonConstants.Symbol.CRLF;
+        String[] array = s.split(CommonConstants.Symbol.CRLF);
         System.out.println(array.length);
         for (String s1 : array) {
             System.out.println(s1);
@@ -120,5 +122,11 @@ public class MyTest {
         String contentType = new MimetypesFileTypeMap().getContentType(file);
 
         System.out.println(contentType);
+    }
+
+    @Test
+    public void testResourceLoad() throws IOException {
+        String string = ResourcesLoader.getResourceAsString("fuck.html");
+        System.out.println(string);
     }
 }
