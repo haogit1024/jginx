@@ -5,6 +5,7 @@ import com.czh.httpd.response.IResponse;
 /**
  * @author chenzh
  */
+@Deprecated
 public interface IResponseHandle {
     void setResponse(IResponse response);
 }

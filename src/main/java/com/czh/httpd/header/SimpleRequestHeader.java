@@ -1,6 +1,7 @@
 package com.czh.httpd.header;
 
 import com.czh.httpd.App;
+import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.exception.HeaderFormatException;
 
 /**
@@ -23,7 +24,7 @@ public class SimpleRequestHeader extends BaseRequestHeader {
 
     @Override
     public void setFirstLine(String line) throws IllegalArgumentException {
-        String[] httpLineArray = line.split(App.SPACE);
+        String[] httpLineArray = line.split(CommonConstants.Symbol.SPACE);
         int httpLineLength = httpLineArray.length;
         if ( httpLineLength != 3) {
             throw new IllegalArgumentException("http行格式错误");
@@ -35,7 +36,7 @@ public class SimpleRequestHeader extends BaseRequestHeader {
 
     @Override
     public String getFirstLine() {
-        return this.method + App.SPACE + this.url + App.SPACE + this.httpVersion;
+        return this.method + CommonConstants.Symbol.SPACE + this.url + CommonConstants.Symbol.SPACE + this.httpVersion;
     }
 
     @Override

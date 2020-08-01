@@ -1,20 +1,21 @@
 package com.czh.httpd.thread;
 
-import com.czh.httpd.handle.IRequestHandle;
-import com.czh.httpd.handle.SimpleRequestHandle;
+import com.czh.httpd.handle.IRequestHandler;
+import com.czh.httpd.handle.RequestHandlerFactory;
+import com.czh.httpd.handle.SimpleRequestHandler;
 import com.czh.httpd.response.Response;
-import com.czh.httpd.response.ResponseFactory;
-import org.apache.commons.lang3.StringUtils;
+import com.czh.httpd.util.ArrayUtil;
+import com.czh.httpd.util.StringUtils;
 
 import java.io.*;
 import java.net.Socket;
 
 /**
- * @author chenzh
+ * @author czh
  * 处理http请求的线程, 每一个http请求生成一条线程
  */
 public class HttpThread extends Thread {
-    private Socket socket;
+    private final Socket socket;
 
     public HttpThread(Socket socket) {
         this.socket = socket;
@@ -29,27 +30,28 @@ public class HttpThread extends Thread {
             byte[] bytes = new byte[inputStream.available()];
             int len = inputStream.read(bytes);
             String requestData = new String(bytes, 0, len);
+            System.out.println("-----request data begin-----");
+            System.out.println(requestData);
+            System.out.println("-----request data end-----");
             Response response;
             if (StringUtils.isNotBlank(requestData)) {
-                IRequestHandle requestHandle = new SimpleRequestHandle();
-                requestHandle.setRequest(requestData);
-                response = requestHandle.getResponse();
-            } else {
-                // 空请求头处理
-                response = ResponseFactory.getIndexResponse("");
+                IRequestHandler requestHandler = RequestHandlerFactory.getNewHandler(requestData);
+                requestHandler.setRequest(requestData);
+                response = requestHandler.getResponse();
+                OutputStream ost = socket.getOutputStream();
+                byte[] res = ArrayUtil.mergeBytes(response.getResponseHeader().build().getBytes(), response.getResponseContent());
+                ost.write(res);
             }
-            OutputStream ost = socket.getOutputStream();
-            ost.write(response.getResponseHeader().build().getBytes());
-            ost.write(response.getResponseContent());
-//            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(ost));
-//            bw.write(response.getResponseHeader().build());
-//            bw.write(response.getResponseContent());
-//            bw.flush();
+//            System.out.println("responseHeader: ");
+//            System.out.println(response.getResponseHeader().build());
+//            ost.write(response.getResponseHeader().build().getBytes());
+//            ost.write(response.getResponseContent());
             socket.shutdownOutput();
+            socket.getInputStream();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("socket已关闭");
+            System.out.println("socket已关闭 jginx");
         }
     }
 }

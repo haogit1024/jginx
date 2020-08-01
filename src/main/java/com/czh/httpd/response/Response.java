@@ -1,6 +1,7 @@
 package com.czh.httpd.response;
 
 import com.czh.httpd.App;
+import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.header.BaseResponseHeader;
 
 /**
@@ -8,7 +9,6 @@ import com.czh.httpd.header.BaseResponseHeader;
  */
 public class Response {
     protected BaseResponseHeader responseHeader;
-    // TODO 修改为byte[]
     protected byte[] responseContent;
 
     public Response() {
@@ -41,7 +41,7 @@ public class Response {
     }
 
     public String build() {
-        return this.responseHeader + App.CRLF + responseContent;
+        return this.responseHeader + CommonConstants.Symbol.CRLF + responseContent;
     }
 
     @Override

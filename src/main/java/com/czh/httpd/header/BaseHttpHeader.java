@@ -1,8 +1,9 @@
 package com.czh.httpd.header;
 
 import com.czh.httpd.App;
+import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.exception.HeaderFormatException;
-import org.apache.commons.lang3.StringUtils;
+import com.czh.httpd.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ public abstract class BaseHttpHeader {
         if (StringUtils.isBlank(headerString)) {
             throw new HeaderFormatException("header不能为空");
         }
-        String[] headerArray = headerString.split(App.CRLF);
+        String[] headerArray = headerString.split(CommonConstants.Symbol.CRLF);
         // http请求头第一行
         String httpLine = headerArray[0];
         this.setFirstLine(httpLine);
@@ -42,7 +43,7 @@ public abstract class BaseHttpHeader {
         int headerLineLength = headerArray.length;
         for (int i = 1; i < headerLineLength; i++) {
             String headerLine = headerArray[i];
-            String[] headerLineArray = headerLine.split(App.HEADER_SEPARATOR);
+            String[] headerLineArray = headerLine.split(CommonConstants.Symbol.HEADER_SEPARATOR);
             if (headerLineArray.length != 2) {
                 throw new IllegalArgumentException("解析http首部错误: " + headerLine);
             }
@@ -108,9 +109,12 @@ public abstract class BaseHttpHeader {
 
     public String build() {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.getFirstLine()).append(App.CRLF);
-        header.forEach((k, v) -> sb.append(k).append(App.HEADER_SEPARATOR).append(v).append(App.CRLF));
-        sb.append(App.CRLF);
+        sb.append(this.getFirstLine()).append(CommonConstants.Symbol.CRLF);
+        header.forEach((k, v) -> sb.append(k)
+                .append(CommonConstants.Symbol.HEADER_SEPARATOR)
+                .append(v)
+                .append(CommonConstants.Symbol.CRLF));
+        sb.append(CommonConstants.Symbol.CRLF);
         return sb.toString();
     }
 //    String demo = """

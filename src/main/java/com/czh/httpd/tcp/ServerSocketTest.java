@@ -21,8 +21,9 @@ public class ServerSocketTest {
     private static final String OUTPUT_END_OF_HEADERS = "\r\n\r\n";
 
     public void start() {
+    	ServerSocket serverSocket = null;
         try {
-            ServerSocket serverSocket = new ServerSocket(9002);
+            serverSocket = new ServerSocket(9002);
             boolean isStop = false;
             int i = 0;
             while (!isStop) {
@@ -31,9 +32,6 @@ public class ServerSocketTest {
                 Socket socket = serverSocket.accept();
                 InputStream in = socket.getInputStream();
                 String inputContent = StreamUtil.getContent(in, "");
-//                byte[] bytes = new byte[in.available()];
-//                in.read(bytes);
-//                String inputContent = new String(bytes);
                 System.out.println("inputContent: " + inputContent);
                 sendResponse(socket);
                 socket.close();
@@ -41,6 +39,14 @@ public class ServerSocketTest {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+        	if (serverSocket != null) {
+        		try {
+					serverSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
     }
 

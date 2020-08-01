@@ -1,17 +1,37 @@
 package com.czh.httpd.util;
 
+import com.czh.httpd.constant.CommonConstants;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 /**
  * @author chenzh
  * 资源加载器
  */
 public class ResourcesLoader {
+    /**
+     * 根据 http 中的 url 读取资源
+     * @param url   http 请求头中的url, demo: /hello.html
+     * @return  file, 如果找不到文件返回 null
+     */
+    public static File getResourceFromUrlAsFile(String url) throws IOException {
+        final String filePath = CommonConstants.Symbol.RESOURCE_DIR + url;
+        URL resourceUrl = ResourcesLoader.class.getResource(filePath);
+        if (resourceUrl == null) {
+            return null;
+        }
+        return new File(resourceUrl.getFile());
+    }
+
     public static String getResourceAsString(String filePath) throws IOException {
         InputStream inputStream = ResourcesLoader.class.getResourceAsStream(filePath);
+        if (inputStream == null) {
+            return null;
+        }
 //        StringBuilder sb = new StringBuilder();
 //        // 一次读取一MB
 //        byte[] bytes = new byte[1024 * 1024];
@@ -28,6 +48,9 @@ public class ResourcesLoader {
     public static byte[] getResourceAsBytes(String filePath) {
         try {
             InputStream inputStream = ResourcesLoader.class.getResourceAsStream(filePath);
+            if (inputStream == null) {
+                return null;
+            }
             byte[] bytes = new byte[inputStream.available()];
             int len = inputStream.read(bytes);
             return ArrayUtil.splitBytes(bytes, 0, len);
@@ -45,25 +68,80 @@ public class ResourcesLoader {
      * @return
      */
     public static String getContent(File file) {
+    	FileInputStream fis = null;
         try {
-            FileInputStream fis = new FileInputStream(file);
+            fis = new FileInputStream(file);
             byte[] bytes = new byte[fis.available()];
             int len = fis.read(bytes);
             return new String(bytes, 0, len);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+        	if (fis != null) {
+        		try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
         return "";
     }
 
     public static byte[] getBytes(File file) {
+    	FileInputStream fis = null;
         try {
-            FileInputStream fis = new FileInputStream(file);
+            fis = new FileInputStream(file);
             byte[] bytes = new byte[fis.available()];
             int len = fis.read(bytes);
             return ArrayUtil.splitBytes(bytes, 0, len);
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("读取文件出错");
+        } finally {
+        	if (fis != null) {
+        		try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
+        }
+        return new byte[0];
+    }
+
+    public static byte[] getBytes(File file, int start, int end) {
+    	FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+            // 指针
+            int index= 0;
+            // 指针向前移动, 一次移动1Mb, 一直移动到start
+            while (index < start) {
+                int temp = index;
+                int oneMb = 1024 * 1024;
+                index += oneMb;
+                if (index > start) {
+                    index = start;
+                }
+                byte[] bytes = new byte[index - temp];
+                fis.read(bytes);
+            }
+            int len = end - start + 1;
+            byte[] bytes = new byte[len];
+            fis.read(bytes);
+            return bytes;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("读取文件出错, " + file.getName());
+        } finally {
+        	if (fis != null) {
+        		try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
         return new byte[0];
     }
@@ -76,13 +154,22 @@ public class ResourcesLoader {
      * @return
      */
     public static String getContent(File file, int off, int len) {
+    	FileInputStream fis = null;
         try {
-            FileInputStream fis = new FileInputStream(file);
+            fis = new FileInputStream(file);
             byte[] bytes = new byte[len];
             len = fis.read(bytes, off, len);
             return new String(bytes, 0, len);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+        	if (fis != null) {
+        		try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
         return "";
     }

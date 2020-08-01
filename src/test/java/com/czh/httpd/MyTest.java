@@ -1,5 +1,7 @@
 package com.czh.httpd;
 
+import com.czh.httpd.constant.CommonConstants;
+import com.czh.httpd.enums.HttpStatus;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.util.ResourcesLoader;
 import org.junit.jupiter.api.Test;
@@ -7,11 +9,18 @@ import org.junit.jupiter.api.Test;
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
 public class MyTest {
+
+    @Test
+    public void testPrint() {
+        System.out.println(File.separator);
+    }
+
     @Test
     public void testString() {
         final String CRLF="\r\n";
@@ -52,8 +61,8 @@ public class MyTest {
 
     @Test
     public void testSplit() {
-        String s = "a" + App.CRLF + "B" + App.CRLF + App.CRLF + App.CRLF + App.CRLF;
-        String[] array = s.split(App.CRLF);
+        String s = "a" + CommonConstants.Symbol.CRLF + "B" + CommonConstants.Symbol.CRLF + CommonConstants.Symbol.CRLF + CommonConstants.Symbol.CRLF + CommonConstants.Symbol.CRLF;
+        String[] array = s.split(CommonConstants.Symbol.CRLF);
         System.out.println(array.length);
         for (String s1 : array) {
             System.out.println(s1);
@@ -89,8 +98,35 @@ public class MyTest {
     public void testContentType() {
         String filePath = "D:\\www\\test.png";
         File file = new File(filePath);
-        System.out.println(file.exists());
-        String type = new MimetypesFileTypeMap().getContentType(file);
-        System.out.println(type);
+//        System.out.println(file.exists());
+//        String type = new MimetypesFileTypeMap().getContentType(file);
+//        System.out.println(type);
+        long length = file.length();
+        System.out.println("length: " + length);
+        System.out.println(length / 1024 / 1024);
+        System.out.printf("%d", 1L);
+    }
+
+    @Test
+    public void testEnum() {
+//        HttpStatus httpStatus = HttpStatus.valueOf(800);
+//        System.out.println(httpStatus == null);
+//        System.out.println(httpStatus.value());
+//        System.out.println(httpStatus.getReasonPhrase());
+
+        File file = new File("D:\\tomcat\\apache-tomcat-9.0.19\\webapps\\test\\test.png");
+//        if (!file.exists()) {
+//            return getNotFoundResponse(cookie, url);
+//        }
+        // 先粗暴处理
+        String contentType = new MimetypesFileTypeMap().getContentType(file);
+
+        System.out.println(contentType);
+    }
+
+    @Test
+    public void testResourceLoad() throws IOException {
+        String string = ResourcesLoader.getResourceAsString("fuck.html");
+        System.out.println(string);
     }
 }
