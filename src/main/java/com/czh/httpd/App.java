@@ -45,9 +45,6 @@ public class App {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (BaseException e) {
-                // TODO 自定http义异常处理
-                e.printStackTrace();
             } finally {
 				if (server != null) {
 					try {

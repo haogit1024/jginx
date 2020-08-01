@@ -33,4 +33,8 @@ public class RequestHandlerFactory {
         }
         return requestHandler;
     }
+
+    public static IRequestHandler getErrorHandler(String request, String errMsg) {
+        return new ErrorRequestHandler(errMsg);
+    }
 }
