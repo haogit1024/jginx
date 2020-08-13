@@ -51,4 +51,11 @@ public interface CommonConstants {
     class HttpHeader {
 
     }
+
+    class ContentTypes {
+        public final static String download = "";
+        public final static String text = "text/html";
+        public final static String video = "";
+        public final static String audio = "";
+    }
 }

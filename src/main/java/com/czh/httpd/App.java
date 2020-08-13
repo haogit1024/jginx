@@ -24,6 +24,12 @@ public class App {
 
     public static final String INDEX_PAGE = "/static/index.html";
     public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        for (String arg : args) {
+            sb.append(arg).append(" ");
+        }
+        // TODO 定义可输入的参数和参数对应的动作
+        System.out.println("args: " + sb.toString());
         try {
             initHttpThread(SettingProperties.SERVER_PORT);
         } catch (BaseException e) {
@@ -41,9 +47,15 @@ public class App {
                 System.out.println("启动成功");
                 while (RUN_ABLE) {
                     Socket socket = server.accept();
-                    new HttpThread(socket).start();
+                    try {
+                        new HttpThread(socket).start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO 自定义异常判断
+                    }
                 }
             } catch (IOException e) {
+                // TODO 处理端口被占用
                 e.printStackTrace();
             } finally {
 				if (server != null) {
