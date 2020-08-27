@@ -12,9 +12,15 @@ public interface CommonEnum {
     }
 
     /**
-     * 
+     * 命令
      */
     enum Command {
-
+        INIT("init"),
+        RELOAD("reload"),
+        START("start"),
+        STOP("stop"),
+        ;
+        Command(String name) {
+        }
     }
 }

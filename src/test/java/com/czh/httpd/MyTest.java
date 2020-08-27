@@ -131,8 +131,11 @@ public class MyTest {
 
     @Test
     public void testThreadPool() throws InterruptedException {
-        ExecutorService executor = Executors.newFixedThreadPool(100);
-        executor.submit(() -> System.out.println("fuck you"));
+        ExecutorService executor = Executors.newFixedThreadPool(10);
+        for (int i = 0; i < 100; i++) {
+            final int index = i;
+            executor.submit(() -> System.out.println("fuck you " + index));
+        }
         executor.shutdown();
         executor.awaitTermination(1, TimeUnit.MINUTES);
     }
