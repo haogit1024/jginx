@@ -2,6 +2,8 @@ package com.czh.httpd;
 
 import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.util.ResourcesLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -14,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class MyTest {
+    Logger log = LogManager.getLogger(MyTest.class);
 
     @Test
     public void testPrint() {
@@ -56,6 +59,7 @@ public class MyTest {
     @Test
     public void testDate() {
         System.out.println(new Date());
+        log.error(new Date());
     }
 
     @Test
