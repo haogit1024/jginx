@@ -52,7 +52,6 @@ public class HttpThread extends Thread {
 //            ost.write(response.getResponseHeader().build().getBytes());
 //            ost.write(response.getResponseContent());
             socket.shutdownOutput();
-            socket.getInputStream();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
