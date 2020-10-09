@@ -45,6 +45,17 @@ public interface CommonConstants {
         public static final String NOT_FOUND  = "/static/404.html";
     }
 
+
+    /**
+     * 配置文件默认路径
+     */
+    class ConfigFilePath {
+        /**
+         * TODO 完善配置文件路径
+         */
+        public static final String defaultConfig = "";
+    }
+
     /**
      * http 头部的 key
      */
