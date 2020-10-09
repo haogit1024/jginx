@@ -143,4 +143,7 @@ public class MyTest {
         executor.shutdown();
         executor.awaitTermination(1, TimeUnit.MINUTES);
     }
+    public static void main(String[] args) {
+    	System.out.println("hello eclipse");
+    }
 }

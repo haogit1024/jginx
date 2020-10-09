@@ -22,7 +22,7 @@ public class PropertiesLoader {
      * @throws IOException
      */
     public PropertiesLoader(String filePath) throws IOException {
-        assert (StringUtils.isBlank(filePath)) : "读取的配置文件路径不能为空";
+        assert (StringUtils.isNotBlank(filePath)) : "读取的配置文件路径不能为空";
         InputStream inputStream;
         if (filePath.contains(File.separator)) {
             // 绝对路径
