@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import com.czh.httpd.App;
 import com.czh.httpd.constant.CommonConstants;
@@ -22,8 +23,17 @@ import com.czh.httpd.util.StringUtils;
  * 响应工厂类
  */
 public class ResponseFactory {
-    public static Response getIndexResponse(String cookie) {
+    public static Response getIndexResponse(String cookie, Server server) {
         // TODO 先判断 root 下有没有默认页, 如果没有再读resource
+        if (server != null) {
+            List<String> index = server.getIndex();
+            if (index.size() > 0) {
+                index.forEach(indexFileName -> {
+                    Path path = Paths.get(server.getRoot(), indexFileName);
+
+                });
+            }
+        }
         return getResponseByResource(CommonConstants.Page.INDEX, cookie, HttpStatus.OK, "");
     }
 
@@ -49,13 +59,14 @@ public class ResponseFactory {
                                             BaseRequestHeader requestHeader) throws IOException {
         System.out.println("url: " + url);
         if ("/".equals(url)) {
-            return getIndexResponse(cookie);
+            return getIndexResponse(cookie, server);
         }
         // 如果符合转发规则, 则转发, 不符合则本地查找
         // 先查找指定工作目录
         Path path = Paths.get(server.getRoot(), url);
         File file = path.toFile();
         // /favicon.ico
+        // TODO 好好想想, 这部分是不是多余的 resouce文件应该是固定的, 且只能通过特定的方法去读取
         if (!file.exists()) {
             // 如果没有, 就读取 static
             file = ResourcesLoader.getResourceFromUrlAsFile(url);
@@ -103,6 +114,8 @@ public class ResponseFactory {
         responseHeader.setHeader("Content-Type", contentType);
         return new Response(responseHeader, content);
     }
+
+    // TODO getResponseByFilePath
 
     private static Response getResponseByResource(String resourcePath, String cookie, HttpStatus httpStatus, String message) {
         String content;
