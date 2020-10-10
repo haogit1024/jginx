@@ -1,0 +1,6 @@
+listen: 80
+location:
+  -
+    url: /test1
+  -
+    url: /test2

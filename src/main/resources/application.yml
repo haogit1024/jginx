@@ -1,0 +1,3 @@
+# 程序配置文件, 基本按照nginx
+http:
+  serverPath: server/
