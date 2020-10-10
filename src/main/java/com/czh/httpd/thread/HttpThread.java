@@ -1,5 +1,6 @@
 package com.czh.httpd.thread;
 
+import com.czh.httpd.entity.Server;
 import com.czh.httpd.handle.IRequestHandler;
 import com.czh.httpd.handle.RequestHandlerFactory;
 import com.czh.httpd.handle.SimpleRequestHandler;
@@ -16,9 +17,11 @@ import java.net.Socket;
  */
 public class HttpThread extends Thread {
     private final Socket socket;
+    private final Server server;
 
-    public HttpThread(Socket socket) {
+    public HttpThread(Socket socket, Server server) {
         this.socket = socket;
+        this.server = server;
     }
 
     @Override
@@ -35,8 +38,7 @@ public class HttpThread extends Thread {
             Response response;
             if (StringUtils.isNotBlank(requestData)) {
                 try {
-                    IRequestHandler requestHandler = RequestHandlerFactory.getNewHandler(requestData);
-                    requestHandler.setRequest(requestData);
+                    IRequestHandler requestHandler = RequestHandlerFactory.getNewHandler(requestData, server);
                     response = requestHandler.getResponse();
                 } catch (Exception e ) {
                     e.printStackTrace();

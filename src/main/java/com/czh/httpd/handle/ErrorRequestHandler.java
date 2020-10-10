@@ -1,5 +1,6 @@
 package com.czh.httpd.handle;
 
+import com.czh.httpd.entity.Server;
 import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.response.ResponseFactory;
@@ -19,9 +20,8 @@ public class ErrorRequestHandler implements IRequestHandler {
 	}
 
 	@Override
-	public void setRequest(String request) throws IllegalAccessError {
-		// TODO Auto-generated method stub
-		
+	public void setServer(Server server) {
+
 	}
 
 	@Override

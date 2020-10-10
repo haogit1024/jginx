@@ -1,5 +1,6 @@
 package com.czh.httpd.util;
 
+import com.czh.httpd.App;
 import com.czh.httpd.entity.Server;
 import org.yaml.snakeyaml.Yaml;
 
@@ -14,9 +15,13 @@ import java.util.Map;
  */
 public class YamlLoader {
     public static void main(String[] args) {
-        Yaml yaml = new Yaml();
+        /*Yaml yaml = new Yaml();
         InputStream inputStream = YamlLoader.class.getResourceAsStream("/server/server.yml");
         Server server = yaml.loadAs(inputStream, Server.class);
-        System.out.println(server);
+        System.out.println(server);*/
+
+
+        String path = App.class.getResource("/").toString();
+        System.out.println(path);
     }
 }

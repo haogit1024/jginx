@@ -1,0 +1,5 @@
+{
+  "//": "server配置文件路径, 必须为一个文件夹",
+  "serverPath": "server",
+  "maxTheadNum": 1000
+}

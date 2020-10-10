@@ -49,11 +49,11 @@ public interface CommonConstants {
     /**
      * 配置文件默认路径
      */
-    class ConfigFilePath {
+    class SystemConfig {
         /**
-         * TODO 完善配置文件路径
+         * 默认json配置文件
          */
-        public static final String defaultConfig = "";
+        public static final String defaultJsonConfigPath = "application.json";
     }
 
     /**

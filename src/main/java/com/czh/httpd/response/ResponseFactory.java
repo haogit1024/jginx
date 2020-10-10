@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 
 import com.czh.httpd.App;
 import com.czh.httpd.constant.CommonConstants;
+import com.czh.httpd.entity.Server;
 import com.czh.httpd.enums.HttpStatus;
 import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.header.BaseResponseHeader;
@@ -22,6 +23,7 @@ import com.czh.httpd.util.StringUtils;
  */
 public class ResponseFactory {
     public static Response getIndexResponse(String cookie) {
+        // TODO 先判断 root 下有没有默认页, 如果没有再读resource
         return getResponseByResource(CommonConstants.Page.INDEX, cookie, HttpStatus.OK, "");
     }
 
@@ -34,20 +36,24 @@ public class ResponseFactory {
     }
 
     /**
-     *
+     * 其实这部分逻辑应该写在 simpleRequestHandler中的
      * @param url
      * @param cookie
      * @param requestHeader
      * @return
      * @throws IOException 权限不足
      */
-    public static Response getResponseByUrl(String url, String cookie, BaseRequestHeader requestHeader) throws IOException {
+    public static Response getResponseByUrl(String url,
+                                            String cookie,
+                                            Server server,
+                                            BaseRequestHeader requestHeader) throws IOException {
         System.out.println("url: " + url);
         if ("/".equals(url)) {
             return getIndexResponse(cookie);
         }
+        // 如果符合转发规则, 则转发, 不符合则本地查找
         // 先查找指定工作目录
-        Path path = Paths.get(App.WORK_SPACE, url);
+        Path path = Paths.get(server.getRoot(), url);
         File file = path.toFile();
         // /favicon.ico
         if (!file.exists()) {

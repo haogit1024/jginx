@@ -1,22 +1,16 @@
 package com.czh.httpd.handle;
 
+import com.czh.httpd.entity.Server;
 import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.response.Response;
 
 /**
- * // TODO 改成抽象类
+ * TODO 改成抽象类
  * @author czh
  * 处理请求类
  */
 public interface IRequestHandler {
-
-    /**
-     * TODO 改为由外部解析request
-     * 设置请求(请求体和请求头)
-     * @param request
-     * @throws IllegalAccessError 请求头格式错误
-     */
-    void setRequest(String request) throws IllegalAccessError;
+    void setServer(Server server);
 
     /**
      * 设置请求头和请求体

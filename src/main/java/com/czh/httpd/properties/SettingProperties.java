@@ -6,6 +6,7 @@ import com.czh.httpd.util.PropertiesLoader;
  * @author czh
  * @date 2020/7/31
  */
+@Deprecated
 public class SettingProperties {
     public static final Integer SERVER_PORT;
 
