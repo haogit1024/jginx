@@ -23,7 +23,6 @@ public class HttpThread extends Thread {
 
     @Override
     public void run() {
-//        IndexResponse indexResponse = new IndexResponse();
         try {
             // 打印每次请求的参数
             InputStream inputStream = socket.getInputStream();
@@ -35,9 +34,15 @@ public class HttpThread extends Thread {
             System.out.println("-----request data end-----");
             Response response;
             if (StringUtils.isNotBlank(requestData)) {
-                IRequestHandler requestHandler = RequestHandlerFactory.getNewHandler(requestData);
-                requestHandler.setRequest(requestData);
-                response = requestHandler.getResponse();
+                try {
+                    IRequestHandler requestHandler = RequestHandlerFactory.getNewHandler(requestData);
+                    requestHandler.setRequest(requestData);
+                    response = requestHandler.getResponse();
+                } catch (Exception e ) {
+                    e.printStackTrace();
+                    // TODO 自定义异常处理
+                    response = RequestHandlerFactory.getErrorHandler(requestData, e.getMessage()).getResponse();
+                }
                 OutputStream ost = socket.getOutputStream();
                 byte[] res = ArrayUtil.mergeBytes(response.getResponseHeader().build().getBytes(), response.getResponseContent());
                 ost.write(res);
@@ -51,7 +56,7 @@ public class HttpThread extends Thread {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("socket已关闭 jginx");
+            System.out.println("socket已关闭");
         }
     }
 }

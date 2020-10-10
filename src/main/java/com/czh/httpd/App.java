@@ -7,6 +7,9 @@ import com.czh.httpd.thread.HttpThread;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author chenzh
@@ -22,8 +25,13 @@ public class App {
      */
     public static boolean RUN_ABLE = true;
 
-    public static final String INDEX_PAGE = "/static/index.html";
     public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        for (String arg : args) {
+            sb.append(arg).append(" ");
+        }
+        // TODO 定义可输入的参数和参数对应的动作
+        System.out.println("args: " + sb.toString());
         try {
             initHttpThread(SettingProperties.SERVER_PORT);
         } catch (BaseException e) {
@@ -33,23 +41,34 @@ public class App {
     }
 
     private static void initHttpThread(Integer serverPort) {
-        // TODO 修改为线程池
         new Thread(() -> {
         	ServerSocket server = null;
+            ExecutorService executor = Executors.newFixedThreadPool(100);
             try {
                 server = new ServerSocket(serverPort);
                 System.out.println("启动成功");
                 while (RUN_ABLE) {
                     Socket socket = server.accept();
-                    new HttpThread(socket).start();
+                    try {
+//                        new HttpThread(socket).start();
+                        executor.submit(new HttpThread(socket));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO 自定义异常判断
+                    }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (BaseException e) {
-                // TODO 自定http义异常处理
+                // TODO 处理端口被占用
                 e.printStackTrace();
             } finally {
-				if (server != null) {
+                executor.shutdown();
+                try {
+                    executor.awaitTermination(1, TimeUnit.MINUTES);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.err.println("线程池停止出错");
+                }
+                if (server != null) {
 					try {
 						server.close();
 					} catch (IOException e) {

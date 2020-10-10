@@ -1,20 +1,22 @@
 package com.czh.httpd;
 
 import com.czh.httpd.constant.CommonConstants;
-import com.czh.httpd.enums.HttpStatus;
-import com.czh.httpd.response.Response;
 import com.czh.httpd.util.ResourcesLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
-import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MyTest {
+    Logger log = LogManager.getLogger(MyTest.class);
 
     @Test
     public void testPrint() {
@@ -57,6 +59,7 @@ public class MyTest {
     @Test
     public void testDate() {
         System.out.println(new Date());
+        log.error(new Date());
     }
 
     @Test
@@ -119,14 +122,25 @@ public class MyTest {
 //            return getNotFoundResponse(cookie, url);
 //        }
         // 先粗暴处理
-        String contentType = new MimetypesFileTypeMap().getContentType(file);
+//        String contentType = new MimetypesFileTypeMap().getContentType(file);
 
-        System.out.println(contentType);
+//        System.out.println(contentType);
     }
 
     @Test
     public void testResourceLoad() throws IOException {
         String string = ResourcesLoader.getResourceAsString("fuck.html");
         System.out.println(string);
+    }
+
+    @Test
+    public void testThreadPool() throws InterruptedException {
+        ExecutorService executor = Executors.newFixedThreadPool(10);
+        for (int i = 0; i < 100; i++) {
+            final int index = i;
+            executor.submit(() -> System.out.println("fuck you " + index));
+        }
+        executor.shutdown();
+        executor.awaitTermination(1, TimeUnit.MINUTES);
     }
 }
