@@ -4,13 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.entity.DefaultConfig;
 import com.czh.httpd.entity.Server;
-import com.czh.httpd.exception.BaseException;
 import com.czh.httpd.exception.ConfigException;
-import com.czh.httpd.properties.SettingProperties;
 import com.czh.httpd.thread.HttpThread;
 import com.czh.httpd.util.FileUtil;
 import com.czh.httpd.util.StringUtils;
-import sun.misc.Cache;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,25 +63,21 @@ public class App {
      */
     private static void loadConfig() throws ConfigException {
         // 读取默认配置文件 如果用在系统下没找到, 就到classPath下查找
-        final String defaultJsonConfigPath = CommonConstants.SystemConfig.defaultJsonConfigPath;
+        final String defaultJsonConfigPath = CommonConstants.SystemConfig.DEFAULT_JSON_CONFIG_PATH;
         File defaultConfigFile = new File(defaultJsonConfigPath);
         if (!defaultConfigFile.exists()) {
             defaultConfigFile = new File(App.class.getResource("/").getPath() + defaultJsonConfigPath);
         }
-        // TODO 改为自定义异常加枚举的形式, 方便统一修改
-//        assert defaultConfigFile.exists() : "没找到默认配置文件";
         if (!defaultConfigFile.exists()) {
             throw new ConfigException(DEFAULT_CONFIG_FILE_NOT_FOUND);
         }
         // 读取server文件路径, 获取到所有server配置文件(目前只考虑获取第一个配置文件)
         final String defaultConfigContent = FileUtil.readTextFile(defaultConfigFile);
-//        assert StringUtils.isNotBlank(defaultConfigContent) : "默认配置文件内容为空";
         if (StringUtils.isBlank(defaultConfigContent)) {
             throw new ConfigException(DEFAULT_CONFIG_CONTENT_IS_BLANK);
         }
         defaultConfig = JSON.parseObject(defaultConfigContent, DefaultConfig.class);
         final String serverPath = defaultConfig.getServerPath();
-//        assert StringUtils.isNotBlank(serverPath) : "server路径为空";
         if (StringUtils.isBlank(serverPath)) {
             throw new ConfigException(DEFAULT_CONFIG_SERVER_PATH_IS_BLANK);
         }
@@ -93,13 +86,10 @@ public class App {
         if (!serverDir.exists()) {
             serverDir = new File(App.class.getResource("/").getPath() + serverPath);
         }
-        /*assert serverDir.exists() : "serverPath不存在";
-        assert serverDir.isDirectory() : "serverPath不是一个文件夹";*/
         if (!serverDir.exists() || !serverDir.isDirectory()) {
             throw new ConfigException(DEFAULT_CONFIG_SERVER_PATH_NOT_EXISTED_OR_NOT_DIR.format(serverPath));
         }
         String[] serverNames = serverDir.list();
-//        assert serverNames != null && serverNames.length > 0 : "server配置文件不存在";
         if (serverNames == null || serverNames.length == 0) {
             throw new ConfigException(DEFAULT_CONFIG_SERVER_PATH_CONTENT_IS_BLANK.format(serverPath));
         }

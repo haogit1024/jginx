@@ -2,6 +2,9 @@ package com.czh.httpd.util;
 
 import java.io.*;
 
+/**
+ * @author chenzh
+ */
 public class StreamUtil {
     public static String getContent(InputStream inputStream, String charsetName) throws IOException {
         if (charsetName == null || "".equals(charsetName)) {

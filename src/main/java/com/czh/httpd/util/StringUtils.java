@@ -3,6 +3,9 @@ package com.czh.httpd.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author chenzh
+ */
 public class StringUtils {
     public static boolean isBlank(final CharSequence cs) {
         int strLen;

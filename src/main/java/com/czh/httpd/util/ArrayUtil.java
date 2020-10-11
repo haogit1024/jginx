@@ -1,5 +1,8 @@
 package com.czh.httpd.util;
 
+/**
+ * @author chenzh
+ */
 public class ArrayUtil {
     public static byte[] splitBytes(byte[] bytes, int offset, int len) {
         byte[] res = new byte[len];

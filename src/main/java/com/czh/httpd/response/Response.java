@@ -1,11 +1,11 @@
 package com.czh.httpd.response;
 
-import com.czh.httpd.App;
 import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.header.BaseResponseHeader;
 
 /**
- * http相应类
+ * http 响应类
+ * @author chenzh
  */
 public class Response {
     protected BaseResponseHeader responseHeader;

@@ -12,7 +12,7 @@ class FileUtilTest {
 
     @Test
     void readTextFile() {
-        String filePath = App.class.getResource("/").getPath() + CommonConstants.SystemConfig.defaultJsonConfigPath;
+        String filePath = App.class.getResource("/").getPath() + CommonConstants.SystemConfig.DEFAULT_JSON_CONFIG_PATH;
         System.out.println(filePath);
         File file = new File(filePath);
         System.out.println(file.exists());

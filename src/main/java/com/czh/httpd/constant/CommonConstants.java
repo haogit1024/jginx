@@ -53,7 +53,7 @@ public interface CommonConstants {
         /**
          * 默认json配置文件
          */
-        public static final String defaultJsonConfigPath = "application.json";
+        public static final String DEFAULT_JSON_CONFIG_PATH = "application.json";
     }
 
     /**
@@ -64,9 +64,9 @@ public interface CommonConstants {
     }
 
     class ContentTypes {
-        public final static String download = "";
-        public final static String text = "text/html";
-        public final static String video = "";
-        public final static String audio = "";
+        public final static String DOWNLOAD = "";
+        public final static String TEXT = "text/html";
+        public final static String VIDEO = "";
+        public final static String AUDIO = "";
     }
 }

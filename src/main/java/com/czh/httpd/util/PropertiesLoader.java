@@ -1,7 +1,6 @@
 package com.czh.httpd.util;
 
 import com.czh.httpd.entity.Server;
-import com.czh.httpd.properties.TestProperties;
 
 import java.io.File;
 import java.io.FileInputStream;

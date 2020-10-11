@@ -30,7 +30,6 @@ public class RequestHandlerFactory {
             requestHandler.setServer(server);
         } else {
             String errMsg = "request格式错误: " + request;
-//            return ResponseFactory.getErrorResponse(errMsg, requestHeader.getCookie());
             requestHandler = new ErrorRequestHandler(errMsg);
         }
         return requestHandler;

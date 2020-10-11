@@ -32,7 +32,9 @@ public interface CommonEnum {
          */
         STOP("stop"),
         ;
+        private final String name;
         Command(String name) {
+            this.name = name;
         }
     }
 }
