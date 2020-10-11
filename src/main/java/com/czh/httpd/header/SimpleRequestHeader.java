@@ -1,8 +1,6 @@
 package com.czh.httpd.header;
 
-import com.czh.httpd.App;
 import com.czh.httpd.constant.CommonConstants;
-import com.czh.httpd.exception.HeaderFormatException;
 
 /**
  * @author czh
@@ -16,9 +14,8 @@ public class SimpleRequestHeader extends BaseRequestHeader {
     /**
      * 根据http请求头生成类
      * @param requestHeaderString http请求头
-     * @exception HeaderFormatException 请求头格式
      */
-    public SimpleRequestHeader(String requestHeaderString) throws IllegalArgumentException {
+    public SimpleRequestHeader(String requestHeaderString) {
         super(requestHeaderString);
     }
 

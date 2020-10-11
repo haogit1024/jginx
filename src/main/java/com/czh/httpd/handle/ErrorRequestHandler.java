@@ -31,9 +31,7 @@ public class ErrorRequestHandler implements IRequestHandler {
 
 	@Override
 	public Response getResponse() {
-		// TODO Auto-generated method stub
 		return ResponseFactory.getErrorResponse(errorMsg, requestHeader.getCookie());
-//		return null;
 	}
 
 }

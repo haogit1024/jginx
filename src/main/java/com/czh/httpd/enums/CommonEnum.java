@@ -15,9 +15,21 @@ public interface CommonEnum {
      * 命令
      */
     enum Command {
+        /**
+         * 初始化
+         */
         INIT("init"),
+        /**
+         * 重启
+         */
         RELOAD("reload"),
+        /**
+         * 启动
+         */
         START("start"),
+        /**
+         * 停止
+         */
         STOP("stop"),
         ;
         Command(String name) {

@@ -2,7 +2,7 @@ package com.czh.httpd.header;
 
 import com.czh.httpd.App;
 import com.czh.httpd.constant.CommonConstants;
-import com.czh.httpd.exception.HeaderFormatException;
+import com.czh.httpd.exception.HttpException;
 import com.czh.httpd.util.StringUtils;
 
 import java.util.HashMap;
@@ -22,11 +22,10 @@ public abstract class BaseHttpHeader {
     /**
      * 根据http首部生成类
      * @param headerString http首部
-     * @exception HeaderFormatException 首部格式错误
      */
     public BaseHttpHeader(String headerString) {
         if (StringUtils.isBlank(headerString)) {
-            throw new HeaderFormatException("header不能为空");
+            throw new HttpException("header不能为空");
         }
         String[] headerArray = headerString.split(CommonConstants.Symbol.CRLF);
         // http请求头第一行

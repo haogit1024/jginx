@@ -1,6 +1,7 @@
 package com.czh.httpd.thread;
 
 import com.czh.httpd.entity.Server;
+import com.czh.httpd.exception.HttpException;
 import com.czh.httpd.handle.IRequestHandler;
 import com.czh.httpd.handle.RequestHandlerFactory;
 import com.czh.httpd.handle.SimpleRequestHandler;
@@ -40,9 +41,8 @@ public class HttpThread extends Thread {
                 try {
                     IRequestHandler requestHandler = RequestHandlerFactory.getNewHandler(requestData, server);
                     response = requestHandler.getResponse();
-                } catch (Exception e ) {
+                } catch (HttpException e ) {
                     e.printStackTrace();
-                    // TODO 自定义异常处理
                     response = RequestHandlerFactory.getErrorHandler(requestData, e.getMessage()).getResponse();
                 }
                 OutputStream ost = socket.getOutputStream();

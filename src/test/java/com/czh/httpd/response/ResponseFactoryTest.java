@@ -2,6 +2,7 @@ package com.czh.httpd.response;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ResponseFactoryTest {
 
     @Test
-    void getIndexResponse() {
+    void getIndexResponse() throws IOException {
         Response response = ResponseFactory.getIndexResponse("", null);
         System.out.println(response);
     }

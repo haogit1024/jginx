@@ -14,6 +14,7 @@ import com.czh.httpd.enums.HttpStatus;
 import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.header.BaseResponseHeader;
 import com.czh.httpd.header.ResponseHeaderFactory;
+import com.czh.httpd.header.SimpleRequestHeader;
 import com.czh.httpd.util.HttpHeaderUtil;
 import com.czh.httpd.util.ResourcesLoader;
 import com.czh.httpd.util.StringUtils;
@@ -23,15 +24,17 @@ import com.czh.httpd.util.StringUtils;
  * 响应工厂类
  */
 public class ResponseFactory {
-    public static Response getIndexResponse(String cookie, Server server) {
-        // TODO 先判断 root 下有没有默认页, 如果没有再读resource
+    public static Response getIndexResponse(String cookie, Server server) throws IOException {
         if (server != null) {
             List<String> index = server.getIndex();
             if (index.size() > 0) {
-                index.forEach(indexFileName -> {
+                for (String indexFileName : index) {
                     Path path = Paths.get(server.getRoot(), indexFileName);
-
-                });
+                    File file = path.toFile();
+                    if (file.exists()) {
+                        return getResponseByFilePath(path, cookie, new SimpleRequestHeader());
+                    }
+                }
             }
         }
         return getResponseByResource(CommonConstants.Page.INDEX, cookie, HttpStatus.OK, "");
@@ -64,19 +67,16 @@ public class ResponseFactory {
         // 如果符合转发规则, 则转发, 不符合则本地查找
         // 先查找指定工作目录
         Path path = Paths.get(server.getRoot(), url);
+        return getResponseByFilePath(path, cookie, requestHeader);
+    }
+
+
+    public static Response getResponseByFilePath(Path path, String cookie, BaseRequestHeader requestHeader) throws IOException {
+        assert path != null : "getResponseByFilePath path为null";
         File file = path.toFile();
-        // /favicon.ico
-        // TODO 好好想想, 这部分是不是多余的 resouce文件应该是固定的, 且只能通过特定的方法去读取
         if (!file.exists()) {
-            // 如果没有, 就读取 static
-            file = ResourcesLoader.getResourceFromUrlAsFile(url);
-            if (file == null) {
-                // 如果 static 没有, 则返回404
-                return getNotFoundResponse(cookie, url);
-            }
+            return getNotFoundResponse(cookie, path.toString());
         }
-        // 先粗暴处理
-//        String contentType = new MimetypesFileTypeMap().getContentType(file);
         String contentType = Files.probeContentType(path);
         String range = requestHeader.getHeader("Range");
         byte[] content;
@@ -115,8 +115,6 @@ public class ResponseFactory {
         return new Response(responseHeader, content);
     }
 
-    // TODO getResponseByFilePath
-
     private static Response getResponseByResource(String resourcePath, String cookie, HttpStatus httpStatus, String message) {
         String content;
         try {
@@ -126,6 +124,7 @@ public class ResponseFactory {
             System.out.println("读取默认页出错");
             return ResponseFactory.getErrorResponse("读取默认页出错", cookie);
         }
+        assert content != null : "读入resource为null, resourcePath: " + resourcePath;
         if (StringUtils.isNotBlank(message)) {
             content = String.format(content, message);
         }

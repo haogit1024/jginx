@@ -1,6 +1,7 @@
 package com.czh.httpd;
 
 import com.czh.httpd.constant.CommonConstants;
+import com.czh.httpd.exception.ConfigException;
 import com.czh.httpd.util.ResourcesLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -143,6 +144,16 @@ public class MyTest {
         executor.shutdown();
         executor.awaitTermination(1, TimeUnit.MINUTES);
     }
+
+    @Test
+    public void testException() {
+        try {
+            throw new ConfigException("hello");
+        } catch (ConfigException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
     	System.out.println("hello eclipse");
     }
