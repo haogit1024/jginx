@@ -22,7 +22,7 @@ public interface CommonEnum {
         /**
          * 重启
          */
-        RELOAD("reload"),
+        RESTART("restart"),
         /**
          * 启动
          */
