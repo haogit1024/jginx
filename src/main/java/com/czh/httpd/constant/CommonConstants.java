@@ -54,6 +54,11 @@ public interface CommonConstants {
          * 默认json配置文件
          */
         public static final String DEFAULT_JSON_CONFIG_PATH = "application.json";
+
+        /**
+         * 默认server路径
+         */
+        public static final String DEFAULT_SERVER_DIR_PATH = "server";
     }
 
     /**

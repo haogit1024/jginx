@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +120,6 @@ public class App {
             ServerSocket server = null;
             try {
                 server = new ServerSocket(defaultServer.getListen());
-                System.out.println("启动成功");
                 while (RUN_ABLE) {
                     Socket socket = server.accept();
                     executor.submit(new HttpThread(socket, defaultServer));
@@ -144,6 +144,8 @@ public class App {
 				}
 			}
         }).start();
+        System.out.println("启动成功");
+        System.out.println("server: " + JSON.toJSONString(defaultServer));
     }
 
     /**

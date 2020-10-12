@@ -117,11 +117,7 @@ public class PropertiesLoader {
     }
 
     public static void main(String[] args) throws IOException {
-        /*PropertiesLoader propertiesLoader = new PropertiesLoader("D:\\czhcode\\github\\java\\simple\\new_util\\src\\main\\resources\\db.properties");
-        propertiesLoader.display();*/
-        PropertiesLoader propertiesLoader = new PropertiesLoader("setting.properties");
-        TestProperties testProperties = propertiesLoader.loadAs("server", TestProperties.class);
-        System.out.println(testProperties.getPort());
-        Server.Location location = new Server.Location();
+        PropertiesLoader propertiesLoader = new PropertiesLoader("D:\\czhcode\\github\\java\\simple\\new_util\\src\\main\\resources\\db.properties");
+        propertiesLoader.display();
     }
 }

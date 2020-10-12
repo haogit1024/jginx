@@ -44,4 +44,12 @@ class FileUtilTest {
     @Test
     void testReadTextFile2() {
     }
+
+    @Test
+    void copy() {
+        long start = System.currentTimeMillis();
+        FileUtil.copyFile(new File("E:\\code"), new File("E:\\fuck\\you\\code"));
+        long end = System.currentTimeMillis();
+        System.out.println("耗时：" + (end - start));
+    }
 }

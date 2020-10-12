@@ -1,13 +1,5 @@
 package com.czh.httpd.response;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
-import com.czh.httpd.App;
 import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.entity.Server;
 import com.czh.httpd.enums.HttpStatus;
@@ -18,6 +10,13 @@ import com.czh.httpd.header.SimpleRequestHeader;
 import com.czh.httpd.util.HttpHeaderUtil;
 import com.czh.httpd.util.ResourcesLoader;
 import com.czh.httpd.util.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * @author czh

@@ -1,8 +1,11 @@
 package com.czh.httpd.strategy;
 
+import com.czh.httpd.App;
+import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.enums.CommonEnum;
+import com.czh.httpd.util.FileUtil;
 
-import java.nio.file.Path;
+import java.io.File;
 
 /**
  * @author chenzh
@@ -16,7 +19,16 @@ public enum CommandStrategy {
     INIT(CommonEnum.Command.INIT) {
         @Override
         public void run() {
-//            Path resourcePath =
+            String defaultConfigFilePath = App.class.getResource("/")
+                    + CommonConstants.SystemConfig.DEFAULT_JSON_CONFIG_PATH;
+            String defaultServerDirPath = App.class.getResource("/")
+                    + CommonConstants.SystemConfig.DEFAULT_SERVER_DIR_PATH;
+            File defaultConfigFile = new File(defaultConfigFilePath);
+            File defaultServerDir = new File(defaultServerDirPath);
+            assert defaultConfigFile.exists() : "默认配置文件不存在";
+            assert defaultServerDir.exists() : "默认serverDir不存在";
+            FileUtil.copyFile(defaultConfigFilePath, CommonConstants.SystemConfig.DEFAULT_JSON_CONFIG_PATH);
+            FileUtil.copyFile(defaultServerDirPath, CommonConstants.SystemConfig.DEFAULT_SERVER_DIR_PATH);
         }
     },
     /**
@@ -64,7 +76,19 @@ public enum CommandStrategy {
                 return item;
             }
         }
-//        throw new
         return null;
+    }
+
+    /**
+     * 运行命令
+     * @param command
+     */
+    public static void run(CommonEnum.Command command) {
+        CommandStrategy commandStrategy = valueOf(command);
+        if (command == null) {
+            // TODO 用户错误
+            throw new RuntimeException("");
+        }
+        commandStrategy.run();
     }
 }
