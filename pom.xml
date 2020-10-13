@@ -116,7 +116,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <archive>
+                    <!--<archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>com.czh.httpd.App</mainClass>
@@ -124,7 +124,15 @@
                     </archive>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    </descriptorRefs>-->
+                    <archive>
+                        <manifest>
+                            <mainClass>com.czh.httpd.App</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptors>
+                        <descriptor>src/assembly/src.xml</descriptor>
+                    </descriptors>
                 </configuration>
                 <executions>
                     <execution>

@@ -1,0 +1,38 @@
+<assembly>
+    <id>release</id>
+    <formats>
+        <format>jar</format>
+        <format>dir</format>
+    </formats>
+
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/libs</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <includes>
+                <include>bin/**</include>
+            </includes>
+            <fileMode>0755</fileMode>
+        </fileSet>
+
+        <fileSet>
+            <includes>
+                <include>/conf/**</include>
+                <include>logs</include>
+            </includes>
+        </fileSet>
+
+    </fileSets>
+
+    <files>
+        <file>
+            <source>README.txt</source>
+            <outputDirectory>/</outputDirectory>
+        </file>
+    </files>
+
+</assembly>
