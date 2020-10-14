@@ -1,17 +1,17 @@
 <assembly>
     <id>release</id>
     <formats>
-        <format>jar</format>
+        <format>zip</format>
         <format>dir</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
     <dependencySets>
-        <dependencySet>
+        <!--<dependencySet>
             <outputDirectory>/libs</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
             <unpack>false</unpack>
             <scope>runtime</scope>
-        </dependencySet>
+        </dependencySet>-->
         <!--<dependencySet>
             <outputDirectory>/</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
@@ -21,17 +21,33 @@
     </dependencySets>
 
     <fileSets>
-        <fileSet>
-            <directory>${project.build.directory}/classes</directory>
+        <!--<fileSet>
+            <directory>${project.build.directory}/czh-server.jar</directory>
             <outputDirectory>/</outputDirectory>
+        </fileSet>-->
+        <fileSet>
+            <directory>${project.build.directory}/libs</directory>
+            <outputDirectory>/libs</outputDirectory>
+        </fileSet>
+        <!--<fileSet>
+            <directory>${project.build.directory}/classes/application.json</directory>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>-->
+        <fileSet>
+            <directory>${project.build.directory}/classes/server</directory>
+            <outputDirectory>/server</outputDirectory>
         </fileSet>
     </fileSets>
 
     <files>
-        <!--<file>
-            <source>README.txt</source>
+        <file>
+            <source>${project.build.directory}/czh-server.jar</source>
             <outputDirectory>/</outputDirectory>
-        </file>-->
+        </file>
+        <file>
+            <source>${project.build.directory}/classes/application.json</source>
+            <outputDirectory>/</outputDirectory>
+        </file>
     </files>
 
 </assembly>

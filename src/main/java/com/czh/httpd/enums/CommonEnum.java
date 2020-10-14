@@ -1,5 +1,7 @@
 package com.czh.httpd.enums;
 
+import lombok.Getter;
+
 /**
  * @author chenzh
  * @date 2020/8/7
@@ -14,6 +16,7 @@ public interface CommonEnum {
     /**
      * 命令
      */
+    @Getter
     enum Command {
         /**
          * 初始化
@@ -35,6 +38,15 @@ public interface CommonEnum {
         private final String name;
         Command(String name) {
             this.name = name;
+        }
+
+        public static Command getByName(String name) {
+            for (Command command : values()) {
+                if (command.getName().equals(name)) {
+                    return command;
+                }
+            }
+            return null;
         }
     }
 }

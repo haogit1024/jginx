@@ -2,7 +2,7 @@
   "//": "基本和nginx server 配置类型",
   "listen": 9876,
   "server_name": ["localhost"],
-  "root": "D:\\www",
+  "root": "html",
   "index": ["index.html"],
   "location": [
     {

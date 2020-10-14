@@ -5,6 +5,7 @@ import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.entity.DefaultConfig;
 import com.czh.httpd.entity.Server;
 import com.czh.httpd.exception.ConfigException;
+import com.czh.httpd.strategy.CommandStrategy;
 import com.czh.httpd.thread.HttpThread;
 import com.czh.httpd.util.FileUtil;
 import com.czh.httpd.util.StringUtils;
@@ -13,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,16 +53,17 @@ public class App {
         for (String arg : args) {
             sb.append(arg).append(" ");
         }
-        // TODO 定义可输入的参数和参数对应的动作
-        System.out.println("args: " + sb.toString());
-        loadConfig();
-        initHttpThread();
+        String command = sb.toString().trim();
+        System.out.println("command: " + command);
+        CommandStrategy.run(command);
+        /*loadConfig();
+        initHttpThread();*/
     }
 
     /**
      * 加载配置文件
      */
-    private static void loadConfig() throws ConfigException {
+    public static void loadConfig() throws ConfigException {
         // 读取默认配置文件 如果用在系统下没找到, 就到classPath下查找
         final String defaultJsonConfigPath = CommonConstants.SystemConfig.DEFAULT_JSON_CONFIG_PATH;
         File defaultConfigFile = new File(defaultJsonConfigPath);
@@ -70,7 +71,7 @@ public class App {
             defaultConfigFile = new File(App.class.getResource("/").getPath() + defaultJsonConfigPath);
         }
         if (!defaultConfigFile.exists()) {
-            throw new ConfigException(DEFAULT_CONFIG_FILE_NOT_FOUND);
+            throw new ConfigException(DEFAULT_CONFIG_FILE_NOT_FOUND.format(defaultConfigFile.getPath()));
         }
         // 读取server文件路径, 获取到所有server配置文件(目前只考虑获取第一个配置文件)
         final String defaultConfigContent = FileUtil.readTextFile(defaultConfigFile);
@@ -109,7 +110,7 @@ public class App {
         }
     }
 
-    private static void initHttpThread() {
+    public static void initHttpThread() {
         // server 自检(先只支持一个配置文件) 1. 不能监听重复的端口 2. 检查其他配置是否正确
         Server defaultServer = serverList.get(0);
         assert defaultServer.getListen() != null : "监听端口不能为空";
