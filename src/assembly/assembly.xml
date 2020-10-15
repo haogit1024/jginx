@@ -41,7 +41,7 @@
 
     <files>
         <file>
-            <source>${project.build.directory}/czh-server.jar</source>
+            <source>${project.build.directory}/jginx.jar</source>
             <outputDirectory>/</outputDirectory>
         </file>
         <file>

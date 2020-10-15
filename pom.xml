@@ -30,11 +30,6 @@
             <artifactId>log4j-api</artifactId>
             <version>2.13.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>1.27</version>
-        </dependency>
         <!-- apache工具包 -->
         <!--<dependency>
             <groupId>org.apache.commons</groupId>
@@ -61,7 +56,7 @@
     </dependencies>
 
     <build>
-        <finalName>czh-server</finalName>
+        <finalName>jginx</finalName>
         <plugins>
             <!-- 指定 jdk 版本 -->
             <plugin>
