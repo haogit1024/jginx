@@ -60,6 +60,22 @@ public class App {
         initHttpThread();*/
     }
 
+    public static void start() {
+        RUN_ABLE = true;
+        loadConfig();
+        initHttpThread();
+    }
+
+    public static void stop() {
+        RUN_ABLE = false;
+        // TODO 等待线程接受
+    }
+
+    public static void restart() {
+        stop();
+        start();
+    }
+
     /**
      * 加载配置文件
      */
@@ -99,7 +115,7 @@ public class App {
         serverMap = new HashMap<>(serverNames.length);
         for (String serverName : serverNames) {
             // TODO 暂时粗暴处理, 后续完善读取
-            if (!serverName.contains("json")) {
+            if (!serverName.contains(".json")) {
                 continue;
             }
             File serverFile = new File(serverDir.getPath(), serverName);
