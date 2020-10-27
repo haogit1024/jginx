@@ -25,12 +25,25 @@ public class StreamUtil {
         return sb.toString();
     }
 
-    public static String getContent(InputStream inputStream) throws IOException {
-        StringBuffer out = new StringBuffer();
-        byte[] b = new byte[4096];
-        for (int n; (n = inputStream.read(b)) != -1;) {
-            out.append(new String(b, 0, n));
+    public static String getHttpRequestHeader(InputStream inputStream, String charsetName) throws IOException {
+        if (charsetName == null || "".equals(charsetName)) {
+            charsetName = "UTF-8";
         }
-        return out.toString();
+        String line;
+        StringBuilder sb = new StringBuilder();
+        sb.append("/r/n");
+        BufferedReader read = new BufferedReader(new InputStreamReader(inputStream,charsetName));
+        String lastLine = "";
+        while ((line = read.readLine()) != null) {
+            // 注意指定编码格式，发送方和接收方一定要统一，建议使用UTF-8
+            System.out.println("");
+            sb.append(line).append("/r/n");
+            // TODO 查一下为什么空行不停止会返回""
+            if (StringUtils.isBlank(line)) {
+                break;
+            }
+            lastLine = line;
+        }
+        return sb.toString();
     }
 }

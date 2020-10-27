@@ -29,6 +29,7 @@ public class HttpThread extends Thread {
     public void run() {
         try {
             // 打印每次请求的参数
+            // TODO 作为静态服务器, 只获取请求头部分内容, 不获取请求体, 避免占用内存
             InputStream inputStream = socket.getInputStream();
             byte[] bytes = new byte[inputStream.available()];
             int len = inputStream.read(bytes);

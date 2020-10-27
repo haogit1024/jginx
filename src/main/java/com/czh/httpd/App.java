@@ -216,6 +216,7 @@ public class App {
         // TODO 修改为先创建线程池, 一个server创建一个循环线程, 并保存到一个map中, 循环线程统一向一个线程池提交线程
         executor = Executors.newFixedThreadPool(defaultConfig.getMaxTheadNum());
         serverList.forEach(server -> {
+            // TODO server自检
             assert server.getListen() != null : "监听端口不能为空";
 
             Thread httpThread = new Thread(() -> {
@@ -243,42 +244,6 @@ public class App {
             System.out.println("启动成功");
             System.out.println("server: " + JSON.toJSONString(server));
         });
-        // server 自检(先只支持一个配置文件) 1. 不能监听重复的端口 2. 检查其他配置是否正确
-        Server server = serverList.get(0);
-        /*assert server.getListen() != null : "监听端口不能为空";
-
-        // TODO 修改为先创建线程池, 一个server创建一个循环线程, 并保存到一个map中, 循环线程统一向一个线程池提交线程
-        ExecutorService executor = Executors.newFixedThreadPool(defaultConfig.getMaxTheadNum());
-        new Thread(() -> {
-            ServerSocket serverSocket = null;
-            try {
-                serverSocket = new ServerSocket(server.getListen());
-                while (RUN_ABLE) {
-                    Socket socket = serverSocket.accept();
-                    executor.submit(new HttpThread(socket, server));
-                }
-            } catch (IOException e) {
-                // TODO 处理端口被占用
-                e.printStackTrace();
-            } finally {
-                executor.shutdown();
-                try {
-                    executor.awaitTermination(1, TimeUnit.MINUTES);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    System.err.println("线程池停止出错");
-                }
-                if (serverSocket != null) {
-					try {
-						serverSocket.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-        }).start();
-        System.out.println("启动成功");
-        System.out.println("server: " + JSON.toJSONString(server));*/
     }
 
     /**
@@ -290,13 +255,14 @@ public class App {
                 guardSocket = new ServerSocket(guardPort);
                 System.out.println("启动成功");
                 while (RUN_ABLE) {
+                    Socket socket;
                     try {
-                        Socket socket = guardSocket.accept();
+                        socket = guardSocket.accept();
                     } catch (SocketException e) {
                         e.printStackTrace();
                         return;
                     }
-
+                    // TODO 验证socket的内容, 执行stop, restart等操作
                 }
             } catch (IOException e) {
                 e.printStackTrace();

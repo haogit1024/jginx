@@ -154,6 +154,14 @@ public class MyTest {
         }
     }
 
+    @Test
+    public void testStr() {
+        String lastLine = "\r\n";
+        String fuck = "\r\n";
+        System.out.println(lastLine);
+        System.out.println(lastLine.equals(fuck));
+    }
+
     public static void main(String[] args) {
     	System.out.println(App.class.getResource("/").getPath());
     }
