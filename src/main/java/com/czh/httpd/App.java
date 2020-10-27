@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,9 +45,34 @@ public class App {
     public static Map<Integer, Server> serverMap;
 
     /**
+     * 监听端口的线程
+     */
+    private static List<Thread> serverThreadList;
+
+    /**
+     * 守护线程
+     */
+    private static Thread guardThread;
+
+    /**
+     * 监听http端口的socket
+     */
+    private static List<ServerSocket> serverSocketList;
+
+    /**
+     * 监听操作端口的socket
+     */
+    private static ServerSocket guardSocket;
+
+    /**
      * 是否可以运行
      */
     public static boolean RUN_ABLE = true;
+
+    /**
+     * http线程池
+     */
+    public static ExecutorService executor;
 
     public static void main(String[] args) {
         StringBuilder sb = new StringBuilder();
@@ -55,25 +81,80 @@ public class App {
         }
         String command = sb.toString().trim();
         System.out.println("command: " + command);
-        CommandStrategy.run(command);
-        /*loadConfig();
-        initHttpThread();*/
+        if (StringUtils.isNotBlank(command)) {
+            CommandStrategy.run(command);
+        }
+        start();
+        displayThread();
+        try {
+            Thread.sleep(1000 * 10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        stop();
+        displayThread();
     }
 
     public static void start() {
         RUN_ABLE = true;
         loadConfig();
+        // 获取配置的操作端口
+        initGuardThread(9999);
         initHttpThread();
     }
 
     public static void stop() {
+        System.out.println("开始停止");
         RUN_ABLE = false;
-        // TODO 等待线程接受
+        // 终止 serverThreadList 和 guardThread 中的 socket 的监听
+        try {
+            if (guardSocket != null) {
+                guardSocket.close();
+            }
+            for (ServerSocket serverSocket : serverSocketList) {
+                if (serverSocket != null) {
+                    serverSocket.close();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 等待线程接受
+        try {
+            for (Thread thread : serverThreadList) {
+                if (thread != null) {
+                    System.out.println("server thread join");
+                    thread.join();
+                }
+            }
+            executor.shutdown();
+            executor.awaitTermination(1, TimeUnit.MINUTES);
+            if (guardThread != null) {
+                System.out.println("guard thread join");
+                guardThread.join();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("完全停止所有线程");
     }
 
     public static void restart() {
         stop();
         start();
+    }
+
+    public static void displayThread() {
+        serverThreadList.forEach(thread -> {
+            System.out.println("server thread == null " + (thread == null));
+            if (thread != null) {
+                System.out.println(thread.getState().toString());
+            }
+        });
+        System.out.println("guardThread == null " + (guardThread == null));
+        if (guardThread != null) {
+            System.out.println(guardThread.getState().toString());
+        }
     }
 
     /**
@@ -127,19 +208,54 @@ public class App {
     }
 
     public static void initHttpThread() {
+        if (serverList.size() == 0) {
+            throw new ConfigException(SERVER_IS_NULL);
+        }
+        serverSocketList = new ArrayList<>(serverList.size());
+        serverThreadList = new ArrayList<>(serverList.size());
+        // TODO 修改为先创建线程池, 一个server创建一个循环线程, 并保存到一个map中, 循环线程统一向一个线程池提交线程
+        executor = Executors.newFixedThreadPool(defaultConfig.getMaxTheadNum());
+        serverList.forEach(server -> {
+            assert server.getListen() != null : "监听端口不能为空";
+
+            Thread httpThread = new Thread(() -> {
+                ServerSocket serverSocket;
+                try {
+                    serverSocket = new ServerSocket(server.getListen());
+                    serverSocketList.add(serverSocket);
+                    while (RUN_ABLE) {
+                        Socket socket;
+                        try {
+                            socket = serverSocket.accept();
+                        } catch (SocketException e) {
+                            e.printStackTrace();
+                            return;
+                        }
+                        executor.submit(new HttpThread(socket, server));
+                    }
+                } catch (IOException e) {
+                    // TODO 处理端口被占用
+                    e.printStackTrace();
+                }
+            });
+            httpThread.start();
+            serverThreadList.add(httpThread);
+            System.out.println("启动成功");
+            System.out.println("server: " + JSON.toJSONString(server));
+        });
         // server 自检(先只支持一个配置文件) 1. 不能监听重复的端口 2. 检查其他配置是否正确
-        Server defaultServer = serverList.get(0);
-        assert defaultServer.getListen() != null : "监听端口不能为空";
+        Server server = serverList.get(0);
+        /*assert server.getListen() != null : "监听端口不能为空";
 
         // TODO 修改为先创建线程池, 一个server创建一个循环线程, 并保存到一个map中, 循环线程统一向一个线程池提交线程
         ExecutorService executor = Executors.newFixedThreadPool(defaultConfig.getMaxTheadNum());
         new Thread(() -> {
-            ServerSocket server = null;
+            ServerSocket serverSocket = null;
             try {
-                server = new ServerSocket(defaultServer.getListen());
+                serverSocket = new ServerSocket(server.getListen());
                 while (RUN_ABLE) {
-                    Socket socket = server.accept();
-                    executor.submit(new HttpThread(socket, defaultServer));
+                    Socket socket = serverSocket.accept();
+                    executor.submit(new HttpThread(socket, server));
                 }
             } catch (IOException e) {
                 // TODO 处理端口被占用
@@ -152,9 +268,9 @@ public class App {
                     e.printStackTrace();
                     System.err.println("线程池停止出错");
                 }
-                if (server != null) {
+                if (serverSocket != null) {
 					try {
-						server.close();
+						serverSocket.close();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -162,26 +278,30 @@ public class App {
 			}
         }).start();
         System.out.println("启动成功");
-        System.out.println("server: " + JSON.toJSONString(defaultServer));
+        System.out.println("server: " + JSON.toJSONString(server));*/
     }
 
     /**
      * 初始化一个守护线程, 用来管理运行中的程序
-     * 方案废弃, 改用生成不同的IResponseHandle来处理
      */
-    @Deprecated
     private static void initGuardThread(Integer guardPort) {
-        new Thread(() -> {
+        guardThread = new Thread(() -> {
             try {
-                ServerSocket server = new ServerSocket(guardPort);
+                guardSocket = new ServerSocket(guardPort);
                 System.out.println("启动成功");
                 while (RUN_ABLE) {
-                    Socket socket = server.accept();
+                    try {
+                        Socket socket = guardSocket.accept();
+                    } catch (SocketException e) {
+                        e.printStackTrace();
+                        return;
+                    }
 
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }).start();
+        });
+        guardThread.start();
     }
 }

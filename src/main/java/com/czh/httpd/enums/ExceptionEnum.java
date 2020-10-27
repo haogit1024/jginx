@@ -22,6 +22,7 @@ public enum ExceptionEnum {
 	DEFAULT_CONFIG_SERVER_PATH_IS_BLANK(1102, "默认配置文件server路径为空"),
 	DEFAULT_CONFIG_SERVER_PATH_NOT_EXISTED_OR_NOT_DIR(1103, "serverPath {0} 不存在或不是一个文件夹"),
 	DEFAULT_CONFIG_SERVER_PATH_CONTENT_IS_BLANK(1103, "serverPath {0} 内容为空"),
+	SERVER_IS_NULL(1104, "SERVER为空"),
 
 	COMMAND_NOT_FOUND(4000, "命令未找到: {0}"),
 	COMMAND_NOT_SUPPORT(4001, "未支持命令: {0}"),
