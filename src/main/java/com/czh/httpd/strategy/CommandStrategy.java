@@ -55,7 +55,7 @@ public enum CommandStrategy {
     RESTART(CommonEnum.Command.RESTART) {
         @Override
         public void run() {
-            // TODO 1.设置改可运行标识 2.等待线程和线程池停止 3.重新加载线程
+            // TODO 调用守护线程调用App.restart方法
         }
     },
     /**
@@ -74,7 +74,7 @@ public enum CommandStrategy {
     STOP(CommonEnum.Command.STOP) {
         @Override
         public void run() {
-            // TODO 1.修改可运行状态 2. 等待线程停止
+            // TODO 调用守护线程调用App.stop方法
         }
     }
     ;

@@ -84,7 +84,7 @@ public class App {
         if (StringUtils.isNotBlank(command)) {
             CommandStrategy.run(command);
         }
-        start();
+        /*start();
         displayThread();
         try {
             Thread.sleep(1000 * 10);
@@ -92,7 +92,7 @@ public class App {
             e.printStackTrace();
         }
         stop();
-        displayThread();
+        displayThread();*/
     }
 
     public static void start() {
@@ -213,7 +213,7 @@ public class App {
         }
         serverSocketList = new ArrayList<>(serverList.size());
         serverThreadList = new ArrayList<>(serverList.size());
-        // TODO 修改为先创建线程池, 一个server创建一个循环线程, 并保存到一个map中, 循环线程统一向一个线程池提交线程
+        // 一个server创建一个循环线程, 并保存到一个map中, 循环线程统一向一个线程池提交线程
         executor = Executors.newFixedThreadPool(defaultConfig.getMaxTheadNum());
         serverList.forEach(server -> {
             // TODO server自检
@@ -262,6 +262,7 @@ public class App {
                         e.printStackTrace();
                         return;
                     }
+
                     // TODO 验证socket的内容, 执行stop, restart等操作
                 }
             } catch (IOException e) {
