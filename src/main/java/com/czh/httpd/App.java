@@ -5,13 +5,16 @@ import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.entity.DefaultConfig;
 import com.czh.httpd.entity.Server;
 import com.czh.httpd.exception.ConfigException;
+import com.czh.httpd.header.SimpleRequestHeader;
 import com.czh.httpd.strategy.CommandStrategy;
 import com.czh.httpd.thread.HttpThread;
 import com.czh.httpd.util.FileUtil;
+import com.czh.httpd.util.StreamUtil;
 import com.czh.httpd.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -83,6 +86,9 @@ public class App {
         System.out.println("command: " + command);
         if (StringUtils.isNotBlank(command)) {
             CommandStrategy.run(command);
+        }
+        if (StringUtils.isBlank(command)) {
+            start();
         }
         /*start();
         displayThread();
@@ -159,6 +165,7 @@ public class App {
 
     /**
      * 加载配置文件
+     * TODO 重构获取配置文件方式
      */
     public static void loadConfig() throws ConfigException {
         // 读取默认配置文件 如果用在系统下没找到, 就到classPath下查找
@@ -262,8 +269,21 @@ public class App {
                         e.printStackTrace();
                         return;
                     }
-
+                    InputStream inputStream = socket.getInputStream();
+                    String reqData = StreamUtil.getContent(inputStream, "UTF-8");
+//                    System.out.println("reqData:");
+//                    System.out.println(reqData);
+                    String realReqData = StringUtils.removePostfix(StringUtils.removePrefix(reqData, "/r/n"), "/r/n");
+                    System.out.println("realReqData");
+                    System.out.println(realReqData);
                     // TODO 验证socket的内容, 执行stop, restart等操作
+                    new Thread(() -> {
+                        if ("stop".equals(realReqData)) {
+                            stop();
+                        } else if ("restart".equals(realReqData)) {
+                            restart();
+                        }
+                    }).start();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

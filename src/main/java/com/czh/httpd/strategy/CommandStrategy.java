@@ -10,6 +10,9 @@ import com.czh.httpd.exception.UserException;
 import com.czh.httpd.util.FileUtil;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
 
 /**
  * @author chenzh
@@ -55,7 +58,18 @@ public enum CommandStrategy {
     RESTART(CommonEnum.Command.RESTART) {
         @Override
         public void run() {
-            // TODO 调用守护线程调用App.restart方法
+            // TODO 获取守护进程端口
+            try {
+                Socket socket = new Socket("localhost", 9999);
+                OutputStream outputStream = socket.getOutputStream();
+                String content = "restart";
+                outputStream.write(content.getBytes());
+                outputStream.flush();
+                outputStream.close();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     },
     /**
@@ -74,7 +88,18 @@ public enum CommandStrategy {
     STOP(CommonEnum.Command.STOP) {
         @Override
         public void run() {
-            // TODO 调用守护线程调用App.stop方法
+            // TODO 获取守护进程端口
+            try {
+                Socket socket = new Socket("localhost", 9999);
+                OutputStream outputStream = socket.getOutputStream();
+                String content = "stop";
+                outputStream.write(content.getBytes());
+                outputStream.flush();
+                outputStream.close();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
     ;
