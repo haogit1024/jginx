@@ -71,6 +71,7 @@ public class PropertiesLoader {
                             val = valueOfMethod.invoke(null, strVal);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            // TODO 处理 valueOf转换失败逻辑
                         }
                     } catch (NoSuchMethodException e) {
                         e.printStackTrace();

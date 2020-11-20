@@ -11,6 +11,8 @@ import com.czh.httpd.thread.HttpThread;
 import com.czh.httpd.util.FileUtil;
 import com.czh.httpd.util.StreamUtil;
 import com.czh.httpd.util.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,6 +79,9 @@ public class App {
      */
     public static ExecutorService executor;
 
+    // TODO 修改 log4j2的配置
+    private static Logger logger = LogManager.getLogger(App.class);
+
     public static void main(String[] args) {
         StringBuilder sb = new StringBuilder();
         for (String arg : args) {
@@ -90,6 +95,7 @@ public class App {
         if (StringUtils.isBlank(command)) {
             start();
         }
+        logger.info("test log4j2......");
         /*start();
         displayThread();
         try {
