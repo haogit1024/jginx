@@ -125,12 +125,20 @@ public class ResourcesLoader {
                     index = start;
                 }
                 byte[] bytes = new byte[index - temp];
-                fis.read(bytes);
+                if ((fis.read(bytes)) == -1) {
+                    return new byte[0];
+                }
             }
+            // 已经移动到需要的位置开始读取数据
             int len = end - start + 1;
             byte[] bytes = new byte[len];
-            fis.read(bytes);
+            // 上层已经对len做了校验和处理, 理论上不需要再处理, 但是为了安全还是处理下
+            int realLen = fis.read(bytes);
+            if (realLen == -1) {
+                return new byte[0];
+            }
             return bytes;
+//            return ArrayUtil.splitBytes(bytes, 0, realLen);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("读取文件出错, " + file.getName());

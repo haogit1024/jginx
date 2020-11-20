@@ -1,7 +1,5 @@
 package com.czh.httpd.util;
 
-import com.czh.httpd.entity.Server;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,17 +28,23 @@ public class PropertiesLoader {
         assert (StringUtils.isNotBlank(filePath)) : "读取的配置文件路径不能为空";
         // 先判断绝对路径下是否存在, 如果不存在则读相对路径
         File file = new File(filePath);
-        InputStream inputStream;
-        if (file.exists()) {
-            // 绝对路径
-            inputStream = new FileInputStream(filePath);
-        } else {
-            // resource下的相对路径
-            inputStream = PropertiesLoader.class.getResourceAsStream("/" + filePath);
+        InputStream inputStream = null;
+        try {
+            if (file.exists()) {
+                // 绝对路径
+                inputStream = new FileInputStream(filePath);
+            } else {
+                // resource下的相对路径
+                inputStream = PropertiesLoader.class.getResourceAsStream("/" + filePath);
+            }
+            assert inputStream != null : "配置文件不存在";
+            properties = new Properties();
+            properties.load(inputStream);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
-        assert inputStream != null : "配置文件不存在";
-        properties = new Properties();
-        properties.load(inputStream);
     }
 
     public String getProperty(String key) {

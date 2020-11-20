@@ -37,6 +37,10 @@
             <directory>${project.build.directory}/classes/server</directory>
             <outputDirectory>/server</outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/classes/html</directory>
+            <outputDirectory>/html</outputDirectory>
+        </fileSet>
     </fileSets>
 
     <files>
