@@ -5,13 +5,11 @@ import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.entity.DefaultConfig;
 import com.czh.httpd.entity.Server;
 import com.czh.httpd.exception.ConfigException;
-import com.czh.httpd.header.SimpleRequestHeader;
 import com.czh.httpd.strategy.CommandStrategy;
 import com.czh.httpd.thread.HttpThread;
 import com.czh.httpd.util.FileUtil;
 import com.czh.httpd.util.StreamUtil;
 import com.czh.httpd.util.StringUtils;
-import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

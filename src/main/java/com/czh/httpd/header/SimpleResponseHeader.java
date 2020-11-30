@@ -1,6 +1,5 @@
 package com.czh.httpd.header;
 
-import com.czh.httpd.App;
 import com.czh.httpd.constant.CommonConstants;
 import com.czh.httpd.enums.HttpStatus;
 
