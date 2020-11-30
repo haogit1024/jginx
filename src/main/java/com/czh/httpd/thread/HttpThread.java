@@ -4,12 +4,14 @@ import com.czh.httpd.entity.Server;
 import com.czh.httpd.exception.HttpException;
 import com.czh.httpd.handle.IRequestHandler;
 import com.czh.httpd.handle.RequestHandlerFactory;
-import com.czh.httpd.handle.SimpleRequestHandler;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.util.ArrayUtil;
 import com.czh.httpd.util.StringUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -33,6 +35,7 @@ public class HttpThread extends Thread {
             InputStream inputStream = socket.getInputStream();
             byte[] bytes = new byte[inputStream.available()];
             int len = inputStream.read(bytes);
+            InetAddress inetAddress = socket.getInetAddress();
             String requestData = new String(bytes, 0, len);
             System.out.println("-----request data begin-----");
             System.out.println(requestData);

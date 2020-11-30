@@ -17,4 +17,9 @@ public class DefaultConfig {
      * 最大执行线程数(不包括监听线程数)
      */
     private Integer maxTheadNum;
+
+    /**
+     * 监听关闭操作的端口(守护线程端口)
+     */
+    private Integer closePort;
 }

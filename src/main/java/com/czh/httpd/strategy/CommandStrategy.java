@@ -58,9 +58,8 @@ public enum CommandStrategy {
     RESTART(CommonEnum.Command.RESTART) {
         @Override
         public void run() {
-            // TODO 获取守护进程端口
             try {
-                Socket socket = new Socket("localhost", 9999);
+                Socket socket = new Socket("localhost", App.defaultConfig.getClosePort());
                 OutputStream outputStream = socket.getOutputStream();
                 String content = "restart";
                 outputStream.write(content.getBytes());
@@ -88,9 +87,8 @@ public enum CommandStrategy {
     STOP(CommonEnum.Command.STOP) {
         @Override
         public void run() {
-            // TODO 获取守护进程端口
             try {
-                Socket socket = new Socket("localhost", 9999);
+                Socket socket = new Socket("localhost", App.defaultConfig.getClosePort());
                 OutputStream outputStream = socket.getOutputStream();
                 String content = "stop";
                 outputStream.write(content.getBytes());

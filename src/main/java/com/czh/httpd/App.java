@@ -11,6 +11,7 @@ import com.czh.httpd.thread.HttpThread;
 import com.czh.httpd.util.FileUtil;
 import com.czh.httpd.util.StreamUtil;
 import com.czh.httpd.util.StringUtils;
+import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -111,7 +112,7 @@ public class App {
         RUN_ABLE = true;
         loadConfig();
         // 获取配置的操作端口
-        initGuardThread(9999);
+        initGuardThread(defaultConfig.getClosePort());
         initHttpThread();
     }
 
