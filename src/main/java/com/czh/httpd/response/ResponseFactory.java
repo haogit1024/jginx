@@ -10,6 +10,8 @@ import com.czh.httpd.header.SimpleRequestHeader;
 import com.czh.httpd.util.HttpHeaderUtil;
 import com.czh.httpd.util.ResourcesLoader;
 import com.czh.httpd.util.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,8 @@ import java.util.List;
  * 响应工厂类
  */
 public class ResponseFactory {
+    private static final Logger log = LogManager.getLogger(ResponseFactory.class);
+    
     public static Response getIndexResponse(String cookie, Server server) throws IOException {
         if (server != null) {
             List<String> index = server.getIndex();
@@ -59,7 +63,6 @@ public class ResponseFactory {
                                             String cookie,
                                             Server server,
                                             BaseRequestHeader requestHeader) throws IOException {
-        System.out.println("url: " + url);
         if ("/".equals(url)) {
             return getIndexResponse(cookie, server);
         }
@@ -82,7 +85,7 @@ public class ResponseFactory {
         BaseResponseHeader responseHeader = ResponseHeaderFactory.getBaseResponseHeader(cookie, HttpStatus.OK);
         if (StringUtils.isNotBlank(range)) {
             // Range 请求头支持
-            System.out.println("Range: " + range);
+            log.info("Range: " + range);
             contentType = "image/png";
             try {
                 int[] rangeArr = HttpHeaderUtil.parseRequestRange(range);
@@ -92,22 +95,22 @@ public class ResponseFactory {
                     end = file.length() - 1;
                 }
                 long len = end - start + 1;
-                System.out.printf("start: %d, end: %s, len: %s\n", start, end, len);
+                log.info("start: {}, end: {}, len: {}", start, end, len);
                 content = ResourcesLoader.getBytes(file, start, (int)end);
                 String responseRange = String.format("bytes %d-%d/%d", start, end, file.length());
-                System.out.println("responseRange: " + responseRange);
+                log.info("responseRange: " + responseRange);
                 responseHeader.setHeader("Content-Length", String.valueOf(content.length));
                 responseHeader.setHeader("Content-Range", responseRange);
                 responseHeader.setHttpStatus(HttpStatus.valueOf(206));
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
-                System.out.println("处理Range出错");
+                log.info("处理Range出错");
                 return ResponseFactory.getErrorResponse(e.getMessage(), cookie);
             }
         } else {
-            System.out.println("not range");
+            log.info("not range");
             content = ResourcesLoader.getBytes(file);
-            System.out.println("content length: " + content.length);
+            log.info("content length: " + content.length);
             responseHeader.setHeader("Content-Length", String.valueOf(file.length()));
         }
         responseHeader.setHeader("Content-Type", contentType);
@@ -120,7 +123,7 @@ public class ResponseFactory {
             content = ResourcesLoader.getResourceAsString(resourcePath);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("读取默认页出错");
+            log.info("读取默认页出错");
             return ResponseFactory.getErrorResponse("读取默认页出错", cookie);
         }
         assert content != null : "读入resource为null, resourcePath: " + resourcePath;

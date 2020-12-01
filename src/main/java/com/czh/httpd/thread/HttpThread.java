@@ -7,6 +7,8 @@ import com.czh.httpd.handle.RequestHandlerFactory;
 import com.czh.httpd.response.Response;
 import com.czh.httpd.util.ArrayUtil;
 import com.czh.httpd.util.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +23,8 @@ import java.net.Socket;
 public class HttpThread extends Thread {
     private final Socket socket;
     private final Server server;
+
+    private final static Logger log = LogManager.getLogger(HttpThread.class);
 
     public HttpThread(Socket socket, Server server) {
         this.socket = socket;
@@ -37,9 +41,9 @@ public class HttpThread extends Thread {
             int len = inputStream.read(bytes);
             InetAddress inetAddress = socket.getInetAddress();
             String requestData = new String(bytes, 0, len);
-            System.out.println("-----request data begin-----");
-            System.out.println(requestData);
-            System.out.println("-----request data end-----");
+            log.info("-----request data begin-----");
+            log.info(requestData);
+            log.info("-----request data end-----");
             Response response;
             if (StringUtils.isNotBlank(requestData)) {
                 try {
@@ -53,15 +57,15 @@ public class HttpThread extends Thread {
                 byte[] res = ArrayUtil.mergeBytes(response.getResponseHeader().build().getBytes(), response.getResponseContent());
                 ost.write(res);
             }
-//            System.out.println("responseHeader: ");
-//            System.out.println(response.getResponseHeader().build());
+//            log.info("responseHeader: ");
+//            log.info(response.getResponseHeader().build());
 //            ost.write(response.getResponseHeader().build().getBytes());
 //            ost.write(response.getResponseContent());
             socket.shutdownOutput();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("socket已关闭");
+            log.info("socket已关闭");
         }
     }
 }

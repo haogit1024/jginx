@@ -79,7 +79,7 @@ public class App {
     public static ExecutorService executor;
 
     // TODO 修改 log4j2的配置
-    private static Logger logger = LogManager.getLogger(App.class);
+    private static Logger log = LogManager.getLogger(App.class);
 
     public static void main(String[] args) {
         StringBuilder sb = new StringBuilder();
@@ -87,14 +87,13 @@ public class App {
             sb.append(arg).append(" ");
         }
         String command = sb.toString().trim();
-        System.out.println("command: " + command);
+        log.info("command: {}", command);
         if (StringUtils.isNotBlank(command)) {
             CommandStrategy.run(command);
         }
         if (StringUtils.isBlank(command)) {
             start();
         }
-        logger.info("test log4j2......");
         /*start();
         displayThread();
         try {
@@ -115,7 +114,7 @@ public class App {
     }
 
     public static void stop() {
-        System.out.println("开始停止");
+        log.info("开始停止");
         RUN_ABLE = false;
         // 终止 serverThreadList 和 guardThread 中的 socket 的监听
         try {
@@ -134,20 +133,20 @@ public class App {
         try {
             for (Thread thread : serverThreadList) {
                 if (thread != null) {
-                    System.out.println("server thread join");
+                    log.info("server thread join");
                     thread.join();
                 }
             }
             executor.shutdown();
             executor.awaitTermination(1, TimeUnit.MINUTES);
             if (guardThread != null) {
-                System.out.println("guard thread join");
+                log.info("guard thread join");
                 guardThread.join();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("完全停止所有线程");
+        log.info("完全停止所有线程");
     }
 
     public static void restart() {
@@ -157,14 +156,14 @@ public class App {
 
     public static void displayThread() {
         serverThreadList.forEach(thread -> {
-            System.out.println("server thread == null " + (thread == null));
+            log.info("server thread == null " + (thread == null));
             if (thread != null) {
-                System.out.println(thread.getState().toString());
+                log.info(thread.getState().toString());
             }
         });
-        System.out.println("guardThread == null " + (guardThread == null));
+        log.info("guardThread == null " + (guardThread == null));
         if (guardThread != null) {
-            System.out.println(guardThread.getState().toString());
+            log.info(guardThread.getState().toString());
         }
     }
 
@@ -253,8 +252,8 @@ public class App {
             });
             httpThread.start();
             serverThreadList.add(httpThread);
-            System.out.println("启动成功");
-            System.out.println("server: " + JSON.toJSONString(server));
+            log.info("启动成功");
+            log.info("server: " + JSON.toJSONString(server));
         });
     }
 
@@ -265,7 +264,7 @@ public class App {
         guardThread = new Thread(() -> {
             try {
                 guardSocket = new ServerSocket(guardPort);
-                System.out.println("启动成功");
+                log.info("启动成功");
                 while (RUN_ABLE) {
                     Socket socket;
                     try {
@@ -276,11 +275,11 @@ public class App {
                     }
                     InputStream inputStream = socket.getInputStream();
                     String reqData = StreamUtil.getContent(inputStream, "UTF-8");
-//                    System.out.println("reqData:");
-//                    System.out.println(reqData);
+//                    log.info("reqData:");
+//                    log.info(reqData);
                     String realReqData = StringUtils.removePostfix(StringUtils.removePrefix(reqData, "/r/n"), "/r/n");
-                    System.out.println("realReqData");
-                    System.out.println(realReqData);
+                    log.info("realReqData");
+                    log.info(realReqData);
                     // TODO 验证socket的内容, 执行stop, restart等操作
                     new Thread(() -> {
                         if ("stop".equals(realReqData)) {

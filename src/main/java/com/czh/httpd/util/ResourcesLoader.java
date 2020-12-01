@@ -1,6 +1,8 @@
 package com.czh.httpd.util;
 
 import com.czh.httpd.constant.CommonConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +15,8 @@ import java.net.URL;
  * 资源加载器
  */
 public class ResourcesLoader {
+    private static final Logger log = LogManager.getLogger(ResourcesLoader.class);
+
     /**
      * 根据 http 中的 url 读取资源
      * @param url   http 请求头中的url, demo: /hello.html
@@ -57,7 +61,7 @@ public class ResourcesLoader {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("读取resource出错");
+            log.info("读取resource出错");
         }
         return new byte[0];
     }
@@ -97,7 +101,7 @@ public class ResourcesLoader {
             return ArrayUtil.splitBytes(bytes, 0, len);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("读取文件出错");
+            log.info("读取文件出错");
         } finally {
         	if (fis != null) {
         		try {
@@ -141,7 +145,7 @@ public class ResourcesLoader {
 //            return ArrayUtil.splitBytes(bytes, 0, realLen);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("读取文件出错, " + file.getName());
+            log.info("读取文件出错, " + file.getName());
         } finally {
         	if (fis != null) {
         		try {
