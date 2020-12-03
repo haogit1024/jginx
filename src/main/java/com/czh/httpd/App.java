@@ -78,8 +78,7 @@ public class App {
      */
     public static ExecutorService executor;
 
-    // TODO 修改 log4j2的配置
-    private static Logger log = LogManager.getLogger(App.class);
+    private static final Logger log = LogManager.getLogger(App.class);
 
     public static void main(String[] args) {
         StringBuilder sb = new StringBuilder();
@@ -169,7 +168,6 @@ public class App {
 
     /**
      * 加载配置文件
-     * TODO 重构获取配置文件方式
      */
     public static void loadConfig() throws ConfigException {
         // 读取默认配置文件 如果用在系统下没找到, 就到classPath下查找

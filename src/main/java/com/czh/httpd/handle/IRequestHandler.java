@@ -5,7 +5,6 @@ import com.czh.httpd.header.BaseRequestHeader;
 import com.czh.httpd.response.Response;
 
 /**
- * TODO 改成抽象类
  * @author czh
  * 处理请求类
  */
